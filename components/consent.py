@@ -97,8 +97,9 @@ def render():
 
     if disagree:
         st.session_state["consent_accepted"] = False
+        st.session_state["phase"] = "welcome"
         st.warning(
             "Thank you for coming. You are willingly disqualified from the study. "
             "Have a good day. 👋"
         )
-        st.stop()
+        st.rerun()

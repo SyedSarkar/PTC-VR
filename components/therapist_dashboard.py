@@ -1086,6 +1086,17 @@ def render_pending_approvals():
         return
 
     st.caption(f"{len(rows)} pending approval(s).")
+    
+    # Accept All button
+    if st.button("✓ Accept All Approvals", type="primary", key="accept_all_approvals"):
+        for row in rows:
+            logger.approve_gate(row["code"], row["gate_key"], by=config.THERAPIST_USERNAME)
+            logger.log_event(row["code"], "gate_approved", {"gate": row["gate_key"]})
+        st.success(f"✅ Approved {len(rows)} pending approval(s).")
+        st.rerun()
+    
+    st.divider()
+    
     for row in rows:
         with st.container(border=True):
             c1, c2, c3 = st.columns([3, 5, 2])
