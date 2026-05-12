@@ -1,0 +1,62 @@
+[
+  {
+    "word": "Rejected",
+    "sentence": "At the party, no one came over to talk to you.",
+    "associated": true,
+    "category": "social_threat"
+  },
+  {
+    "word": "Accepted",
+    "sentence": "Your colleagues invited you to lunch and made you feel welcome.",
+    "associated": true,
+    "category": "social_safe"
+  },
+  {
+    "word": "Mocked",
+    "sentence": "The audience laughed warmly with you during your story.",
+    "associated": false,
+    "category": "social_threat"
+  },
+  {
+    "word": "Praised",
+    "sentence": "Your boss singled out your work as exceptional in the meeting.",
+    "associated": true,
+    "category": "social_safe"
+  },
+  {
+    "word": "Ignored",
+    "sentence": "Everyone in the group listened carefully when you spoke.",
+    "associated": false,
+    "category": "social_safe"
+  },
+  {
+    "word": "Embarrassed",
+    "sentence": "You tripped on stage in front of the entire audience.",
+    "associated": true,
+    "category": "social_threat"
+  },
+  {
+    "word": "Welcomed",
+    "sentence": "The host smiled and offered you their seat at the table.",
+    "associated": true,
+    "category": "social_safe"
+  },
+  {
+    "word": "Judged",
+    "sentence": "Your friend gave you a long, warm hug after the show.",
+    "associated": false,
+    "category": "social_safe"
+  },
+  {
+    "word": "Confident",
+    "sentence": "You delivered the presentation calmly and answered every question.",
+    "associated": true,
+    "category": "social_safe"
+  },
+  {
+    "word": "Humiliated",
+    "sentence": "The boss publicly criticised your report in front of the team.",
+    "associated": true,
+    "category": "social_threat"
+  }
+]
