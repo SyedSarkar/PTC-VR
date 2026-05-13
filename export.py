@@ -192,6 +192,11 @@ def _participant_to_row(code: str, data: dict) -> dict:
         "withdrawal_reason": withdrawal.get("reason"),
         "anonymized": bool(meta.get("anonymized", False)),
     }
+    # Add admin_notes as flattened columns
+    admin_notes = meta.get("admin_notes") or {}
+    if isinstance(admin_notes, dict):
+        for key, value in admin_notes.items():
+            row[f"admin_note_{key}"] = value
     for phase in ("pre", "post1", "post2", "post3"):
         row.update(_extract_lsas_scores(data, phase))
         row.update(_extract_scale_total(data, phase, "bfne"))
@@ -214,7 +219,7 @@ def _build_demographics(all_data: dict) -> pd.DataFrame:
         if not isinstance(data, dict):
             continue
         meta = data.get("metadata") or {}
-        rows.append({
+        row = {
             "participant_code": code,
             **{k: meta.get(k) for k in (
                 "roll_number", "group", "name", "email", "contact", "age",
@@ -222,7 +227,13 @@ def _build_demographics(all_data: dict) -> pd.DataFrame:
                 "anonymized", "anonymized_at",
                 "created_timestamp", "last_updated",
             )},
-        })
+        }
+        # Add admin_notes as flattened columns
+        admin_notes = meta.get("admin_notes") or {}
+        if isinstance(admin_notes, dict):
+            for key, value in admin_notes.items():
+                row[f"admin_note_{key}"] = value
+        rows.append(row)
     return pd.DataFrame(rows)
 
 

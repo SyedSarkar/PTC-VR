@@ -258,6 +258,78 @@ def _section_identity(meta: dict):
     st.dataframe(df, use_container_width=True, hide_index=True)
 
 
+def _section_admin_notes(code: str, meta: dict):
+    """Allow admin to add custom notes, tips, links for each participant."""
+    st.subheader("Admin Notes / Custom Fields")
+    logger = get_logger()
+    
+    # Get existing admin notes
+    admin_notes = meta.get("admin_notes") or {}
+    if not isinstance(admin_notes, dict):
+        admin_notes = {}
+    
+    # Display existing notes
+    if admin_notes:
+        st.markdown("**Existing Custom Fields:**")
+        df = _kv_dataframe(admin_notes)
+        st.dataframe(df, use_container_width=True, hide_index=True)
+        
+        # Option to delete a field
+        with st.expander("🗑 Delete a custom field"):
+            field_to_delete = st.selectbox(
+                "Select field to delete:",
+                options=[""] + list(admin_notes.keys()),
+                key=f"del_field_{code}"
+            )
+            if field_to_delete and st.button(
+                "Delete Field", 
+                type="secondary",
+                key=f"confirm_del_{code}_{field_to_delete}"
+            ):
+                del admin_notes[field_to_delete]
+                logger.set(code, "metadata/admin_notes", admin_notes)
+                logger.log_event(code, "admin_note_deleted", {"field": field_to_delete})
+                st.success(f"Deleted field: {field_to_delete}")
+                st.rerun()
+    else:
+        st.caption("No custom fields added yet.")
+    
+    st.divider()
+    
+    # Add new field
+    st.markdown("**Add New Custom Field:**")
+    with st.form(key=f"add_note_form_{code}"):
+        col1, col2 = st.columns([2, 3])
+        with col1:
+            field_name = st.text_input(
+                "Field Name (e.g., 'Tips', 'Resources', 'Notes')",
+                key=f"field_name_{code}"
+            )
+        with col2:
+            field_value = st.text_area(
+                "Field Value (e.g., tips, links, notes)",
+                key=f"field_value_{code}",
+                height=80
+            )
+        
+        submitted = st.form_submit_button("➕ Add Field", type="primary")
+        
+        if submitted:
+            if not field_name.strip():
+                st.error("Field name cannot be empty.")
+            elif not field_value.strip():
+                st.error("Field value cannot be empty.")
+            else:
+                # Add to admin_notes
+                admin_notes[field_name.strip()] = field_value.strip()
+                logger.set(code, "metadata/admin_notes", admin_notes)
+                logger.log_event(code, "admin_note_added", {
+                    "field": field_name.strip()
+                })
+                st.success(f"Added field: {field_name.strip()}")
+                st.rerun()
+
+
 def _section_consent(consent: dict):
     st.subheader("2. Consent")
     if not consent:
@@ -945,6 +1017,8 @@ def render_participant_detail(code: str):
 
     # Sections
     _section_identity(meta)
+    st.divider()
+    _section_admin_notes(code, meta)
     st.divider()
     _section_consent(consent)
     st.divider()
