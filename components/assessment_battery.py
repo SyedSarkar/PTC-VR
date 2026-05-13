@@ -19,7 +19,7 @@ from utils.helpers import next_phase as _next_phase
 from utils.data_logger import get_logger
 from utils.questionnaire_engine import is_questionnaire_complete
 
-from components.questionnaires import lsas, bfne, cbq, bat, oximeter, dot_probe, wsa
+from components.questionnaires import lsas, bfne, cbq, cbq_trait, bat, oximeter, dot_probe, wsa
 
 
 # Map: phase -> firebase root for that battery
@@ -43,13 +43,14 @@ ASSESSMENT_TITLES = {
 # total_items=None means the step uses a custom completion check below.
 def _battery_steps(base_path: str):
     return [
-        ("lsas",      lsas.render,       len(config.LSAS_ITEMS),    f"{base_path}/lsas"),
-        ("bfne",      bfne.render,       len(config.BFNE_ITEMS),    f"{base_path}/bfne"),
-        ("cbq",       cbq.render,        len(config.CBQ_ITEMS),     f"{base_path}/cbq"),
-        ("bat",       bat.render,        len(config.BAT_SCENARIOS), f"{base_path}/bat"),
-        ("dot_probe", dot_probe.render,  None,                      f"{base_path}/dot_probe"),
-        ("wsa",       wsa.render,        None,                      f"{base_path}/wsa"),
-        ("oximeter",  oximeter.render,   None,                      f"{base_path}/oximeter"),
+        ("lsas",       lsas.render,       len(config.LSAS_ITEMS),       f"{base_path}/lsas"),
+        ("bfne",       bfne.render,       len(config.BFNE_ITEMS),       f"{base_path}/bfne"),
+        ("cbq",        cbq.render,        len(config.CBQ_ITEMS),        f"{base_path}/cbq"),
+        ("cbq_trait",  cbq_trait.render,  len(config.CBQ_TRAIT_ITEMS),  f"{base_path}/cbq_trait"),
+        ("bat",        bat.render,        len(config.BAT_SCENARIOS),    f"{base_path}/bat"),
+        ("dot_probe",  dot_probe.render,  None,                         f"{base_path}/dot_probe"),
+        ("wsa",        wsa.render,        None,                         f"{base_path}/wsa"),
+        ("oximeter",   oximeter.render,   None,                         f"{base_path}/oximeter"),
     ]
 
 

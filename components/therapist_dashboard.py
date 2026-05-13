@@ -30,6 +30,8 @@ import pandas as pd
 import config
 from utils.helpers import now_iso
 from utils.data_logger import get_logger
+from export import render_single_participant_export
+ 
 
 
 # ============================================================================
@@ -331,7 +333,11 @@ def _render_bat_table(node: dict):
     """BAT items historically saved `scenario` / `willingness` instead of
     the generic `item_text` / `raw_value` used by Likert scales. Build the
     rows directly from the BAT keys (with fallbacks for newer aliased data)."""
-    items = _normalise_items((node or {}).get("items"))
+    # Handle both dict and list structures
+    if isinstance(node, list):
+        items = _normalise_items(node)
+    else:
+        items = _normalise_items((node or {}).get("items"))
     rows = []
     indexed = {}
     for i, entry in enumerate(items):
@@ -537,6 +543,9 @@ def _section_assessment(code: str, data: dict, key: str, heading: str,
 
     st.markdown("**CBQ — Cognitive Beliefs Questionnaire (20 items)**")
     _render_likert_table(node.get("cbq") or {}, "CBQ", len(config.CBQ_ITEMS), "Item")
+
+    st.markdown("**CBQ-Trait — Cognitive Beliefs Questionnaire - Trait (20 items)**")
+    _render_likert_table(node.get("cbq_trait") or {}, "CBQ-Trait", len(config.CBQ_TRAIT_ITEMS), "Item")
 
     st.markdown("**BAT — Behavioral Avoidance Task (8 scenarios)**")
     _render_bat_table(node.get("bat") or {})
@@ -1155,3 +1164,4 @@ def render():
 
     with tab3:
         render_export()
+        render_single_participant_export()

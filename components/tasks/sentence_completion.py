@@ -99,12 +99,14 @@ def render(code: str, session_num: int, on_complete=None):
     response_key = f"{base_path}_input_{completed_count}"
     form_key = f"{base_path}_form_{completed_count}"
     with st.form(form_key, clear_on_submit=True, border=False):
-        response = st.text_input(
-            "Complete with 1–3 positive / neutral words (press Enter to submit):",
-            key=response_key,
-            placeholder="e.g., happy, calm, peaceful",
-        )
-        submit = st.form_submit_button("Submit", type="primary")
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            response = st.text_input(
+                "",
+                key=response_key,
+                placeholder="e.g., happy, calm, peaceful",
+            )
+            submit = st.form_submit_button("Submit", type="primary", use_container_width=True)
 
     if submit:
         rt = round(time.time() - st.session_state[timer_key], 2)

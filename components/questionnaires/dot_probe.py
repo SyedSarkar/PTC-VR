@@ -101,33 +101,49 @@ def render(code: str, base_path: str, on_complete=None):
         st.error("No participant code in session.")
         return
 
+    # Track if user has seen instructions
+    safe_key = base_path.replace("/", "_")
+    if f"{safe_key}_instructions_seen" not in st.session_state:
+        st.session_state[f"{safe_key}_instructions_seen"] = False
+
     # If task is already done, skip
     if _is_complete(code, base_path):
         st.success("✅ Dot-Probe task already completed.")
         if on_complete:
             if st.button("Continue ➜", type="primary",
-                         key=f"{base_path.replace('/', '_')}_continue"):
+                         key=f"{safe_key}_continue"):
                 on_complete()
         return
 
-    st.markdown("## Attentional Bias — Dot-Probe Task")
-    st.markdown(
-        "<div class='form-text'>"
-        "<b>Instructions:</b><br>"
-        "• A fixation cross <code>+</code> will appear briefly.<br>"
-        "• Two words will flash on the screen (one above, one below).<br>"
-        "• A small dot <code>·</code> will then appear where one of the words was.<br>"
-        "• Press <b>↑ Up Arrow</b> if the dot is above, <b>↓ Down Arrow</b> if it is below.<br>"
-        "• Respond as quickly and accurately as you can.<br>"
-        "</div>",
-        unsafe_allow_html=True,
-    )
-    st.caption(
-        "💡 Click inside the task area below before pressing keys, so the "
-        "browser focuses the experiment."
-    )
-    st.divider()
+    # Show instructions page first
+    if not st.session_state[f"{safe_key}_instructions_seen"]:
+        st.markdown("## Attentional Bias — Dot-Probe Task")
+        st.markdown(
+            "<div class='form-text'>"
+            "<b>Instructions:</b><br>"
+            "• A fixation cross <code>+</code> will appear briefly.<br>"
+            "• Two words will flash on the screen (one above, one below).<br>"
+            "• A small dot <code>·</code> will then appear where one of the words was.<br>"
+            "• Press <b>↑ Up Arrow</b> if the dot is above, <b>↓ Down Arrow</b> if it is below.<br>"
+            "• Respond as quickly and accurately as you can.<br>"
+            "</div>",
+            unsafe_allow_html=True,
+        )
+        st.caption(
+            "💡 <b>Important:</b> After clicking start, the task will fill your screen. "
+            "Press arrow keys quickly - the page won't scroll during the task."
+        )
+        st.divider()
+        
+        if st.button("Start Task ➜", type="primary", key=f"{safe_key}_start"):
+            st.session_state[f"{safe_key}_instructions_seen"] = True
+            st.rerun()
+        return
 
+    # Task page - minimal UI to prevent scrolling
+    st.markdown("### Dot-Probe Task")
+    st.caption("Press arrow keys quickly - page won't scroll during task")
+    
     # Build trials and PUT URL once per page render. Trial order is randomised
     # on each render, but if the participant refreshes mid-task they restart
     # from trial 1 (acceptable — task is short and only completes once).
@@ -135,11 +151,12 @@ def render(code: str, base_path: str, on_complete=None):
     put_url = _build_firebase_put_url(code, base_path)
     if not put_url:
         st.error(
-            "FIREBASE_DATABASE_URL is not configured — the in-browser task "
-            "cannot save its results. Please set FIREBASE_DATABASE_URL in "
-            ".env.local."
+            "⚠️ Firebase not configured — results cannot be saved. "
+            "Please set FIREBASE_DATABASE_URL in .env.local"
         )
-        return
+        st.info("Task will run but results won't be saved to database.")
+        # Allow running anyway for testing
+        put_url = ""  # Empty URL will cause upload to fail but task will run
 
     html = _build_html(
         trials=trials,
@@ -151,26 +168,29 @@ def render(code: str, base_path: str, on_complete=None):
         iti_max_ms=config.DOT_PROBE_ITI_MAX_MS,
     )
 
-    components.html(html, height=560, scrolling=False)
+    # Use a container to keep the task focused and prevent page scrolling
+    with st.container():
+        components.html(html, height=560, scrolling=False)
 
     st.markdown(
-        "<div class='form-text' style='margin-top:18px;'>"
-        "When the task screen shows <b>'Task complete'</b>, click the button "
-        "below to continue.</div>",
+        "<div class='form-text' style='margin-top:10px; font-size:14px;'>"
+        "When the task shows <b>'Task complete'</b>, click below to continue.</div>",
         unsafe_allow_html=True,
     )
     safe = base_path.replace("/", "_")
-    if st.button("I've finished the task ➜", type="primary",
-                 key=f"{safe}_check"):
-        # Re-check Firebase to confirm data landed
-        if _is_complete(code, base_path):
-            st.rerun()
-        else:
-            st.warning(
-                "Couldn't find your task results yet. Please make sure the "
-                "task screen says 'Task complete' before clicking, and try "
-                "again in a moment."
-            )
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("I've finished the task ➜", type="primary",
+                     key=f"{safe}_check", use_container_width=True):
+            # Re-check Firebase to confirm data landed
+            if _is_complete(code, base_path):
+                st.rerun()
+            else:
+                st.warning(
+                    "Couldn't find your task results yet. Please make sure the "
+                    "task screen says 'Task complete' before clicking, and try "
+                    "again in a moment."
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -182,7 +202,7 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
     return f"""
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>
-  html, body {{ height: 100%; margin: 0; padding: 0; }}
+  html, body {{ height: 100%; margin: 0; padding: 0; overflow: hidden; }}
   body {{
       display: flex; align-items: center; justify-content: center;
       background: #f6f9fc; font-family: 'Times New Roman', Times, serif;
@@ -278,6 +298,8 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
         if (e.key === 'ArrowUp')   r = 'up';
         if (e.key === 'ArrowDown') r = 'down';
         if (r === null) return;
+        e.preventDefault();  // Prevent page scrolling
+        e.stopPropagation();
         resolved = true;
         window.removeEventListener('keydown', onKey);
         clearTimeout(to);
@@ -357,11 +379,25 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
   async function run() {{
     startBtn.disabled = true;
     stage.focus();
+    
+    // Prevent arrow key scrolling during entire task
+    const preventScroll = (e) => {{
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {{
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    }};
+    window.addEventListener('keydown', preventScroll);
+    
     const results = [];
     for (let i = 0; i < TRIALS.length; i++) {{
       const r = await runTrial(TRIALS[i], i + 1, TRIALS.length);
       results.push(r);
     }}
+    
+    // Re-enable scrolling after task
+    window.removeEventListener('keydown', preventScroll);
+    
     const summary = summarise(results);
     const payload = Object.assign({{}}, summary, {{
       trials: results,

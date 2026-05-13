@@ -223,6 +223,49 @@ CBQ_ITEMS = [
 ]
 
 # ============================================================================
+# CBQ-Trait (Cognitive Beliefs Questionnaire - Trait) — 20 items, 1-6 scale
+# ============================================================================
+CBQ_TRAIT_INSTRUCTIONS = (
+    "People frequently hold a range of both positive and negative beliefs about themselves. "
+    "Below is a list of common negative beliefs that people may hold in varying degrees. "
+    "Please rate the extent to which you personally believe each statement accurately describes "
+    "how you generally feel about yourself. Please try to be as honest as you can when responding "
+    "to these items. Remember that your answers will remain completely confidential."
+)
+
+CBQ_TRAIT_LABELS = [
+    "1 — Strongly disbelieve",
+    "2 — Moderately disbelieve",
+    "3 — Slightly disbelieve",
+    "4 — Slightly believe",
+    "5 — Moderately believe",
+    "6 — Strongly believe",
+]
+
+CBQ_TRAIT_ITEMS = [
+    "I am unlikeable",
+    "I am foolish",
+    "I am inadequate",
+    "I am inferior",
+    "I am uninteresting",
+    "I am boring",
+    "I am dumb/stupid",
+    "I am a weak person",
+    "I am incompetent",
+    "I am unacceptable",
+    "I am not a worthwhile person",
+    "I am a weird person",
+    "I am odd/peculiar",
+    "I am unimportant",
+    "I am physically unattractive",
+    "I am inept",
+    "I am undesirable",
+    "I am unlovable",
+    "I am a failure",
+    "I am defective",
+]
+
+# ============================================================================
 # SSQ (Simulator Sickness Questionnaire) — 16 items, 0-3 scale
 # ============================================================================
 SSQ_INSTRUCTIONS = (
@@ -513,31 +556,7 @@ DOT_PROBE_WORD_PAIRS = [
     ("Inadequate",   "Capable"),
     ("Failure",      "Achiever"),
     ("Stupid",       "Intelligent"),
-    ("Pathetic",     "Admirable"),
-    ("Foolish",      "Wise"),
-    ("Inferior",     "Respected"),
-    ("Indecisive",   "Decisive"),
-    ("Inept",        "Skilled"),
-    ("Lonely",       "Connected"),
-    ("Hated",        "Loved"),
-    ("Humiliated",   "Proud"),
-    ("Terrified",    "Brave"),
-    ("Incompetent",  "Competent"),
-    ("Worthless",    "Valuable"),
-    ("Ignored",      "Acknowledged"),
-    ("Insecure",     "Secure"),
-    ("Ashamed",      "Honored"),
-    ("Mocked",       "Appreciated"),
-    ("Unseen",       "Greeted"),
-    ("Unheard",      "Appreciated"),
-    ("Misunderstood","Understood"),
-    ("Overlooked",   "Recognized"),
-    ("Neglected",    "Cared"),
-    ("Unliked",      "Liked"),
-    ("Unnoticed",    "Valued"),
-    ("Excluded",     "Supported"),
-    ("Neglected",    "Remembered"),
-    ("Outcast",      "Connected"),
+    ("Pathetic",     "Admirable")
 ]
 
 # Trial count per assessment point (default = all pairs once).

@@ -30,6 +30,17 @@ def render(code: str, base_path: str, on_complete=None):
     # Load existing responses
     existing = logger.get(code, base_path) or {}
     
+    # Handle both dict and list data structures from Firebase
+    existing_dict = {}
+    if isinstance(existing, list):
+        # Convert list to dict with string keys for consistency
+        existing_dict = {str(i): item for i, item in enumerate(existing) if isinstance(item, dict)}
+    elif isinstance(existing, dict):
+        # Firebase returns dict with string keys like "0", "1", "2"
+        existing_dict = {str(k): v for k, v in existing.items() if isinstance(v, dict)}
+    else:
+        existing_dict = {}
+    
     # Track which scenario is currently being viewed
     if f"{safe_key}_selected_scenario" not in st.session_state:
         st.session_state[f"{safe_key}_selected_scenario"] = None
@@ -43,11 +54,11 @@ def render(code: str, base_path: str, on_complete=None):
     )
     st.divider()
     
-    # Check if all scenarios are complete
-    completed_count = sum(1 for i in range(total) if existing.get(str(i), {}).get("completed", False))
+    # Check if at least 1 scenario is complete
+    completed_count = sum(1 for i in range(total) if existing_dict.get(str(i), {}).get("completed", False))
     
-    if completed_count == total:
-        st.success(f"✅ All {total} scenarios completed!")
+    if completed_count >= 1:
+        st.success(f"✅ You have completed {completed_count} scenario(s). You may proceed.")
         if on_complete:
             if st.button("Continue ➜", type="primary", key=f"{safe_key}_continue"):
                 on_complete()
@@ -65,7 +76,7 @@ def render(code: str, base_path: str, on_complete=None):
     if selected_scenario_idx is None:
         st.markdown("### Select a scenario to rate:")
         for idx, scenario in enumerate(items):
-            scenario_data = existing.get(str(idx), {})
+            scenario_data = existing_dict.get(str(idx), {})
             is_complete = scenario_data.get("completed", False)
             
             with st.container():
@@ -89,7 +100,7 @@ def render(code: str, base_path: str, on_complete=None):
     else:
         # Show selected scenario with Pre/Post SUDS ratings
         scenario = items[selected_scenario_idx]
-        scenario_data = existing.get(str(selected_scenario_idx), {})
+        scenario_data = existing_dict.get(str(selected_scenario_idx), {})
         
         # Back button
         if st.button("← Back to List", key=f"{safe_key}_back"):

@@ -19,8 +19,8 @@ from utils.data_logger import get_logger
 
 def _format_feedback(msg: str, color: str) -> str:
     return (
-        f"<div style='text-align:center; font-size:18px; font-weight:bold; "
-        f"color:{color}; padding:8px;'>{msg}</div>"
+        f"<div style='text-align:center; font-size:24px; font-weight:bold; "
+        f"color:{color}; padding:12px; margin:10px 0;'>{msg}</div>"
     )
 
 
@@ -94,9 +94,13 @@ def render(code: str, session_num: int, on_complete=None):
 
     st.progress(safe_progress(completed_count, total))
 
+    # Feedback placeholder - positioned prominently below progress bar
+    feedback_placeholder = st.empty()
+
     cue = cue_words[completed_count]
     st.markdown(
-        f"<div class='cue-word'>{cue}</div>",
+        f"<div class='cue-word' style='text-align:center; font-size:32px; font-weight:bold; "
+        f"color:#010d1a; padding:20px; margin:20px 0;'>{cue}</div>",
         unsafe_allow_html=True,
     )
 
@@ -105,20 +109,20 @@ def render(code: str, session_num: int, on_complete=None):
     if timer_key not in st.session_state:
         st.session_state[timer_key] = time.time()
 
-    feedback_placeholder = st.empty()
-
     # Wrap input + submit in a form so pressing Enter inside the text box
     # submits — no mouse click required. clear_on_submit resets the box
     # after each accepted attempt so the next cue starts with an empty field.
     response_key = f"{base_path}_input_{completed_count}"
     form_key = f"{base_path}_form_{completed_count}"
     with st.form(form_key, clear_on_submit=True, border=False):
-        response = st.text_input(
-            "Type a positive / neutral word (press Enter to submit):",
-            key=response_key,
-            placeholder="e.g., kind, calm, hopeful",
-        )
-        submit = st.form_submit_button("Submit", type="primary")
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            response = st.text_input(
+                "",
+                key=response_key,
+                placeholder="e.g., kind, calm, hopeful",
+            )
+            submit = st.form_submit_button("Submit", type="primary", use_container_width=True)
 
     if submit:
         rt = round(time.time() - st.session_state[timer_key], 2)

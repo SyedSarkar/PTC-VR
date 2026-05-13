@@ -196,6 +196,7 @@ def _participant_to_row(code: str, data: dict) -> dict:
         row.update(_extract_lsas_scores(data, phase))
         row.update(_extract_scale_total(data, phase, "bfne"))
         row.update(_extract_scale_total(data, phase, "cbq"))
+        row.update(_extract_scale_total(data, phase, "cbq_trait"))
         row.update(_extract_bat_scores(data, phase))
         row.update(_extract_oximeter(data, phase))
     row.update(_extract_ptc_training(data))
@@ -751,6 +752,7 @@ def build_workbook_bytes() -> tuple[bytes | None, dict]:
         "Assessments_LSAS_items": _build_lsas_items(all_data),
         "Assessments_BFNE_items": _build_likert_items(all_data, "bfne", len(config.BFNE_ITEMS)),
         "Assessments_CBQ_items": _build_likert_items(all_data, "cbq", len(config.CBQ_ITEMS)),
+        "Assessments_CBQ_Trait_items": _build_likert_items(all_data, "cbq_trait", len(config.CBQ_TRAIT_ITEMS)),
         "Assessments_BAT_items": _build_bat_items(all_data),
         "Assessments_DotProbe_summary": _build_dot_probe_summary(all_data),
         "Assessments_DotProbe_trials": _build_dot_probe_trials(all_data),
@@ -847,3 +849,167 @@ def export_single_participant(code: str) -> pd.DataFrame:
     if not data:
         return pd.DataFrame()
     return pd.DataFrame([_participant_to_row(code, data)])
+
+
+def build_single_participant_workbook(code: str) -> tuple[bytes | None, dict]:
+    """
+    Build a comprehensive multi-sheet workbook for a SINGLE participant.
+    Returns (bytes, summary_dict). Returns (None, {}) if participant not found.
+    """
+    logger = get_logger()
+    data = logger.load_participant(code)
+    if not data or not isinstance(data, dict):
+        return (None, {})
+
+    # Wrap single participant data in the format expected by sheet builders
+    single_data = {code: data}
+
+    # Build every sheet up-front so we can include a non-trivial summary.
+    sheets: dict[str, pd.DataFrame] = {
+        "Participants": pd.DataFrame([_participant_to_row(code, data)]),
+        "Demographics": _build_demographics(single_data),
+        "Consent": _build_consent(single_data),
+        "Progress": _build_progress(single_data),
+        "Withdrawals": _build_withdrawals(single_data),
+        "Assessments_LSAS_items": _build_lsas_items(single_data),
+        "Assessments_BFNE_items": _build_likert_items(single_data, "bfne", len(config.BFNE_ITEMS)),
+        "Assessments_CBQ_items": _build_likert_items(single_data, "cbq", len(config.CBQ_ITEMS)),
+        "Assessments_CBQ_Trait_items": _build_likert_items(single_data, "cbq_trait", len(config.CBQ_TRAIT_ITEMS)),
+        "Assessments_BAT_items": _build_bat_items(single_data),
+        "Assessments_DotProbe_summary": _build_dot_probe_summary(single_data),
+        "Assessments_DotProbe_trials": _build_dot_probe_trials(single_data),
+        "Assessments_WSA_summary": _build_wsa_summary(single_data),
+        "Assessments_WSA_trials": _build_wsa_trials(single_data),
+        "Assessments_Oximeter": _build_assessment_oximeter(single_data),
+        "PTC_FAT": _build_ptc_fat(single_data),
+        "PTC_SentenceCompletion": _build_ptc_sentence(single_data),
+        "VR_SessionMeta": _build_vr_session_meta(single_data),
+        "VR_SSQ_pre": _build_vr_ssq(single_data, "pre_ssq"),
+        "VR_SSQ_post": _build_vr_ssq(single_data, "post_ssq"),
+        "VR_IGroupPresence": _build_vr_igroup(single_data),
+        "VR_Oximeter": _build_vr_oximeter(single_data),
+        "RealExposure_Sessions": _build_real_exposure(single_data),
+        "EventsLog": _build_events(single_data),
+    }
+
+    # Drop empty sheets so the workbook stays clean
+    sheets = {k: v for k, v in sheets.items() if isinstance(v, pd.DataFrame) and not v.empty}
+
+    # Build summary sheet for single participant
+    meta = data.get("metadata") or {}
+    summary_rows = [
+        {"Metric": "Participant Code", "Value": code},
+        {"Metric": "Name", "Value": meta.get("name", "")},
+        {"Metric": "Roll Number", "Value": meta.get("roll_number", "")},
+        {"Metric": "Group", "Value": meta.get("group", "")},
+        {"Metric": "Current Phase", "Value": (data.get("progress") or {}).get("current_phase", "")},
+    ]
+    for sheet_name, df in sheets.items():
+        summary_rows.append({"Metric": f"{sheet_name} rows", "Value": len(df)})
+    summary_df = pd.DataFrame(summary_rows)
+
+    # Write to xlsx
+    out = BytesIO()
+    with pd.ExcelWriter(out, engine="openpyxl") as writer:
+        summary_df.to_excel(writer, sheet_name="Summary", index=False)
+        for name, df in sheets.items():
+            df.to_excel(writer, sheet_name=_safe_sheet_name(name), index=False)
+
+    out.seek(0)
+    return (
+        out.getvalue(),
+        {
+            "participant_code": code,
+            "sheets": len(sheets) + 1,
+            "rows_per_sheet": {name: len(df) for name, df in sheets.items()},
+        },
+    )
+
+
+def render_single_participant_export():
+    """
+    Streamlit UI component for selecting and exporting a single participant's data.
+    Can be called from therapist dashboard or as a standalone export page.
+    """
+    st.subheader("📥 Single Participant Export")
+    st.markdown(
+        "<div class='form-text'>Select a participant to download their complete data "
+        "as an Excel file with multiple sheets.</div>",
+        unsafe_allow_html=True,
+    )
+    st.divider()
+
+    logger = get_logger()
+    all_data = logger.list_all_participants() or {}
+    all_data = {k: v for k, v in all_data.items() if isinstance(v, dict)}
+
+    if not all_data:
+        st.info("No participants found in the database.")
+        return
+
+    # Build participant list with metadata for selection
+    participant_options = []
+    for code, data in all_data.items():
+        meta = data.get("metadata") or {}
+        name = meta.get("name", "")
+        roll = meta.get("roll_number", "")
+        group = meta.get("group", "")
+        label = f"{code}"
+        if name:
+            label += f" — {name}"
+        if roll:
+            label += f" (Roll: {roll})"
+        if group:
+            label += f" [{group}]"
+        participant_options.append((code, label))
+
+    participant_options.sort(key=lambda x: x[0])  # Sort by code
+
+    selected = st.selectbox(
+        "Select Participant:",
+        options=[opt[0] for opt in participant_options],
+        format_func=lambda x: next(label for code, label in participant_options if code == x),
+        key="single_participant_export_select",
+    )
+
+    if selected:
+        # Show participant summary
+        data = all_data.get(selected, {})
+        meta = data.get("metadata") or {}
+        progress = data.get("progress") or {}
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Participant Code", selected)
+        with col2:
+            st.metric("Name", meta.get("name", "N/A"))
+        with col3:
+            st.metric("Group", meta.get("group", "N/A"))
+
+        st.divider()
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Current Phase", progress.get("current_phase", "N/A"))
+        with col2:
+            st.metric("Roll Number", meta.get("roll_number", "N/A"))
+
+        st.divider()
+
+        # Download button
+        if st.button("📥 Download Participant Data", type="primary", key="download_single_participant"):
+            workbook_bytes, summary = build_single_participant_workbook(selected)
+            
+            if workbook_bytes:
+                filename = f"participant_{selected}_{st.session_state.get('user_role', 'export')}.xlsx"
+                st.download_button(
+                    label="⬇️ Click to Download Excel File",
+                    data=workbook_bytes,
+                    file_name=filename,
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    key="download_single_participant_file"
+                )
+                st.success(f"Ready to download: {filename}")
+                st.info(f"Workbook contains {summary.get('sheets', 0)} sheets with participant data.")
+            else:
+                st.error("Failed to generate workbook. Please try again.")
