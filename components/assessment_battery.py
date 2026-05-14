@@ -37,9 +37,9 @@ def _battery_steps(base_path: str):
         ("cbq",        cbq.render,        len(config.CBQ_ITEMS),        f"{base_path}/cbq"),
         ("cbq_trait",  cbq_trait.render,  len(config.CBQ_TRAIT_ITEMS),  f"{base_path}/cbq_trait"),
         ("bat",        bat.render,        len(config.BAT_SCENARIOS),    f"{base_path}/bat"),
-        ("dot_probe",  dot_probe.render,  None,                         f"{base_path}/dot_probe"),
-        ("wsa",        wsa.render,        None,                         f"{base_path}/wsa"),
         ("oximeter",   oximeter.render,   None,                         f"{base_path}/oximeter"),
+        ("dot_probe",  dot_probe.render,  None,                         f"{base_path}/dot_probe"),
+        ("wsa",        wsa.render,        None,                         f"{base_path}/wsa")
     ]
 
 
