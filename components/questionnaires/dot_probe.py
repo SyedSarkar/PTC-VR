@@ -1,34 +1,13 @@
 """
 components/questionnaires/dot_probe.py
 =======================================
-Attentional Bias — Dot-Probe Task.
-
-The experiment runs entirely client-side in an embedded HTML/JS component
-because Streamlit's Python rerun loop cannot deliver the 500/700/1500 ms
-stimulus windows reliably. Trial-by-trial results are POSTed directly to
-Firebase Realtime Database via REST so participants can advance once done.
-
-Protocol (per trial):
-    1. Fixation cross "+"      — DOT_PROBE_FIXATION_MS
-    2. Word pair (one above, one below)  — DOT_PROBE_WORDS_MS
-    3. Probe dot (·) appears in one of the two locations
-       until response or DOT_PROBE_PROBE_TIMEOUT_MS
-    4. Blank ITI                — random in [ITI_MIN, ITI_MAX]
-
-Saved structure (at participants/{code}/{base_path}):
-    {
-        "completed_timestamp": "...",
-        "num_trials": 30,
-        "mean_rt_correct_ms": 612,
-        "accuracy": 0.97,
-        "bias_index_ms": -23.5,
-        "trials": [ { ... per-trial dict ... }, ... ]
-    }
+Dot-Probe Task - Loads from CSV + Randomizes trial order per session
 """
 
 from __future__ import annotations
 import json
 import random
+import pandas as pd
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -37,54 +16,70 @@ import config
 from utils.data_logger import get_logger
 
 
-def _is_complete(code: str, base_path: str) -> bool:
-    logger = get_logger()
-    node = logger.get(code, base_path) or {}
-    if not isinstance(node, dict):
-        return False
-    return bool(node.get("completed_timestamp"))
+def _load_dot_probe_trials() -> list[dict]:
+    """Load from CSV and shuffle order for each session"""
+    try:
+        df = pd.read_csv(config.DATA_DIR / "dot_probe.csv")
+        trials = []
+        
+        for _, row in df.iterrows():
+            top_word = str(row.get("TOP Word", "")).strip()
+            bottom_word = str(row.get("BOTTOM Word", "")).strip()
+            dot_pos = str(row.get("Dot Position", "top")).strip().lower()
+            
+            trials.append({
+                "trial": int(row.get("Trial")),
+                "block": int(row.get("Block", 1)),
+                "pair_type": str(row.get("Pair Type", "")),
+                "threat_word": top_word if dot_pos == "top" else bottom_word,
+                "neutral_word": bottom_word if dot_pos == "top" else top_word,
+                "word_top": top_word,
+                "word_bottom": bottom_word,
+                "threat_position": "top" if dot_pos == "top" else "bottom",
+                "probe_position": "top" if dot_pos == "top" else "bottom",
+                "is_congruent": (dot_pos == "top"),
+            })
+        
+        # === RANDOMIZE TRIAL ORDER ===
+        random.shuffle(trials)
+        
+        # Re-number trials sequentially after shuffle
+        for i, trial in enumerate(trials):
+            trial["trial"] = i + 1
+            
+        return trials
+        
+    except Exception as e:
+        st.error(f"Error loading dot_probe.csv: {e}")
+        st.info("Using fallback from config.py")
+        return _build_fallback_trials()
 
 
-def _build_trial_list() -> list[dict]:
-    """Sample N pairs (without replacement when possible) and randomise
-    threat-position + probe-position per trial."""
+def _build_fallback_trials() -> list[dict]:
+    """Original fallback"""
+    import random
     pairs = list(config.DOT_PROBE_WORD_PAIRS)
     random.shuffle(pairs)
-    n = min(config.DOT_PROBE_NUM_TRIALS, len(pairs))
-    pairs = pairs[:n]
-
     trials = []
-    for i, (threat, neutral) in enumerate(pairs):
-        threat_position = random.choice(["top", "bottom"])
-        probe_position = random.choice(["top", "bottom"])
-        if threat_position == "top":
-            word_top, word_bottom = threat, neutral
-        else:
-            word_top, word_bottom = neutral, threat
+    for i, (threat, neutral) in enumerate(pairs[:config.DOT_PROBE_NUM_TRIALS]):
+        threat_pos = random.choice(["top", "bottom"])
+        probe_pos = random.choice(["top", "bottom"])
         trials.append({
             "trial": i + 1,
             "threat_word": threat,
             "neutral_word": neutral,
-            "word_top": word_top,
-            "word_bottom": word_bottom,
-            "threat_position": threat_position,
-            "probe_position": probe_position,
-            # Congruent = probe replaces the threat word (attention captured by threat)
-            "is_congruent": (threat_position == probe_position),
+            "word_top": threat if threat_pos == "top" else neutral,
+            "word_bottom": neutral if threat_pos == "top" else threat,
+            "threat_position": threat_pos,
+            "probe_position": probe_pos,
+            "is_congruent": threat_pos == probe_pos,
         })
     return trials
 
 
 def _build_firebase_put_url(code: str, base_path: str) -> str:
-    """Build the REST URL for a PUT against participants/{code}/{base_path}.
-
-    NOTE: this assumes Firebase Realtime Database rules permit unauthenticated
-    writes (typical for private research deployments). If your rules require
-    auth, this won't work — see the dashboard's audit note.
-    """
     base = config.FIREBASE_DATABASE_URL.rstrip("/")
     if not base:
-        # Fallback to default project URL if available via env
         try:
             creds = config.get_firebase_credentials()
             project = creds.get("project_id")
@@ -96,141 +91,85 @@ def _build_firebase_put_url(code: str, base_path: str) -> str:
     return f"{base}/{path}.json" if base else ""
 
 
+def _is_complete(code: str, base_path: str) -> bool:
+    logger = get_logger()
+    node = logger.get(code, base_path) or {}
+    return isinstance(node, dict) and bool(node.get("completed_timestamp"))
+
+
 def render(code: str, base_path: str, on_complete=None):
     if not code:
         st.error("No participant code in session.")
         return
 
-    # Track if user has seen instructions
+    if _is_complete(code, base_path):
+        st.success("✅ Dot-Probe task already completed.")
+        if on_complete and st.button("Continue ➜", type="primary"):
+            on_complete()
+        return
+
     safe_key = base_path.replace("/", "_")
     if f"{safe_key}_instructions_seen" not in st.session_state:
         st.session_state[f"{safe_key}_instructions_seen"] = False
 
-    # If task is already done, skip
-    if _is_complete(code, base_path):
-        st.success("✅ Dot-Probe task already completed.")
-        if on_complete:
-            if st.button("Continue ➜", type="primary",
-                         key=f"{safe_key}_continue"):
-                on_complete()
-        return
-
-    # Show instructions page first
     if not st.session_state[f"{safe_key}_instructions_seen"]:
         st.markdown("## Attentional Bias — Dot-Probe Task")
         st.markdown(
             "<div class='form-text'>"
             "<b>Instructions:</b><br>"
-            "• A fixation cross <code>+</code> will appear briefly.<br>"
-            "• Two words will flash on the screen (one above, one below).<br>"
-            "• A small dot <code>·</code> will then appear where one of the words was.<br>"
-            "• Press <b>↑ Up Arrow</b> if the dot is above, <b>↓ Down Arrow</b> if it is below.<br>"
-            "• Respond as quickly and accurately as you can.<br>"
+            "• Fixation cross appears briefly.<br>"
+            "• Two words flash (one above, one below).<br>"
+            "• Dot appears — press ↑ or ↓ quickly.<br>"
+            "• Be fast and accurate."
             "</div>",
             unsafe_allow_html=True,
         )
-        st.caption(
-            "💡 <b>Important:</b> After clicking start, the task will fill your screen. "
-            "Press arrow keys quickly - the page won't scroll during the task."
-        )
-        st.divider()
-        
         if st.button("Start Task ➜", type="primary", key=f"{safe_key}_start"):
             st.session_state[f"{safe_key}_instructions_seen"] = True
             st.rerun()
         return
 
-    # Task page - minimal UI to prevent scrolling
     st.markdown("### Dot-Probe Task")
-    st.caption("Press arrow keys quickly - page won't scroll during task")
-    
-    # Build trials and PUT URL once per page render. Trial order is randomised
-    # on each render, but if the participant refreshes mid-task they restart
-    # from trial 1 (acceptable — task is short and only completes once).
-    trials = _build_trial_list()
+    trials = _load_dot_probe_trials()
     put_url = _build_firebase_put_url(code, base_path)
-    if not put_url:
-        st.error(
-            "⚠️ Firebase not configured — results cannot be saved. "
-            "Please set FIREBASE_DATABASE_URL in .env.local"
-        )
-        st.info("Task will run but results won't be saved to database.")
-        # Allow running anyway for testing
-        put_url = ""  # Empty URL will cause upload to fail but task will run
 
-    html = _build_html(
-        trials=trials,
-        put_url=put_url,
-        fixation_ms=config.DOT_PROBE_FIXATION_MS,
-        words_ms=config.DOT_PROBE_WORDS_MS,
-        probe_timeout_ms=config.DOT_PROBE_PROBE_TIMEOUT_MS,
-        iti_min_ms=config.DOT_PROBE_ITI_MIN_MS,
-        iti_max_ms=config.DOT_PROBE_ITI_MAX_MS,
-    )
+    html = _build_html(trials, put_url)
 
-    # Use a container to keep the task focused and prevent page scrolling
     with st.container():
         components.html(html, height=560, scrolling=False)
 
-    st.markdown(
-        "<div class='form-text' style='margin-top:10px; font-size:14px;'>"
-        "When the task shows <b>'Task complete'</b>, click below to continue.</div>",
-        unsafe_allow_html=True,
-    )
-    safe = base_path.replace("/", "_")
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("I've finished the task ➜", type="primary",
-                     key=f"{safe}_check", use_container_width=True):
-            # Re-check Firebase to confirm data landed
-            if _is_complete(code, base_path):
-                st.rerun()
-            else:
-                st.warning(
-                    "Couldn't find your task results yet. Please make sure the "
-                    "task screen says 'Task complete' before clicking, and try "
-                    "again in a moment."
-                )
+    if st.button("I've finished the task ➜", type="primary", use_container_width=True):
+        if _is_complete(code, base_path):
+            st.rerun()
+        else:
+            st.warning("Waiting for results to save... Try again shortly.")
 
 
-# ---------------------------------------------------------------------------
-# HTML / JS template
-# ---------------------------------------------------------------------------
-def _build_html(trials, put_url, fixation_ms, words_ms,
-                probe_timeout_ms, iti_min_ms, iti_max_ms) -> str:
+def _build_html(trials, put_url):
     trials_json = json.dumps(trials)
+    put_url_str = put_url or ""
+    
     return f"""
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><style>
+<html><head><meta charset="utf-8">
+<style>
   html, body {{ height: 100%; margin: 0; padding: 0; overflow: hidden; }}
-  body {{
-      display: flex; align-items: center; justify-content: center;
-      background: #f6f9fc; font-family: 'Times New Roman', Times, serif;
-      color: #010d1a;
-      outline: none;
-  }}
-  .stage {{
-      width: 100%; height: 500px; position: relative;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center;
-      border: 2px solid #c9d6e3; border-radius: 8px; background: #ffffff;
-  }}
-  .fix     {{ font-size: 64px; font-weight: bold; }}
-  .word    {{ font-size: 36px; font-weight: bold; }}
-  .word.top    {{ position: absolute; top: 30%; }}
+  body {{ display: flex; align-items: center; justify-content: center;
+         background: #f6f9fc; font-family: 'Times New Roman', serif; color: #010d1a; }}
+  .stage {{ width: 100%; height: 500px; position: relative; display: flex; 
+           flex-direction: column; align-items: center; justify-content: center;
+           border: 2px solid #c9d6e3; border-radius: 8px; background: #ffffff; }}
+  .fix {{ font-size: 64px; font-weight: bold; }}
+  .word {{ font-size: 36px; font-weight: bold; }}
+  .word.top {{ position: absolute; top: 30%; }}
   .word.bottom {{ position: absolute; bottom: 30%; }}
-  .probe   {{ font-size: 64px; font-weight: bold; color: #c0392b; }}
-  .probe.top    {{ position: absolute; top: 30%; }}
+  .probe {{ font-size: 64px; font-weight: bold; color: #c0392b; }}
+  .probe.top {{ position: absolute; top: 30%; }}
   .probe.bottom {{ position: absolute; bottom: 30%; }}
-  .msg     {{ font-size: 22px; text-align: center; padding: 0 30px; }}
-  .progress {{
-      position: absolute; bottom: 10px; right: 14px;
-      font-size: 13px; color: #888;
-  }}
-  button.start {{
-      font-size: 20px; padding: 12px 28px; border-radius: 6px;
-      background: #2ecc71; color: white; border: none; cursor: pointer;
-  }}
+  .msg {{ font-size: 22px; text-align: center; padding: 0 30px; }}
+  .progress {{ position: absolute; bottom: 10px; right: 14px; font-size: 13px; color: #888; }}
+  button.start {{ font-size: 20px; padding: 12px 28px; border-radius: 6px;
+                 background: #2ecc71; color: white; border: none; cursor: pointer; }}
 </style></head>
 <body tabindex="0">
   <div class="stage" id="stage" tabindex="0">
@@ -241,19 +180,20 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
     </div>
     <div class="progress" id="prog"></div>
   </div>
+
 <script>
 (function() {{
-  const TRIALS  = {trials_json};
-  const FIXATION_MS  = {fixation_ms};
-  const WORDS_MS     = {words_ms};
-  const PROBE_MS     = {probe_timeout_ms};
-  const ITI_MIN_MS   = {iti_min_ms};
-  const ITI_MAX_MS   = {iti_max_ms};
-  const PUT_URL      = {json.dumps(put_url)};
+  const TRIALS = {trials_json};
+  const FIXATION_MS = {config.DOT_PROBE_FIXATION_MS};
+  const WORDS_MS = {config.DOT_PROBE_WORDS_MS};
+  const PROBE_MS = {config.DOT_PROBE_PROBE_TIMEOUT_MS};
+  const ITI_MIN_MS = {config.DOT_PROBE_ITI_MIN_MS};
+  const ITI_MAX_MS = {config.DOT_PROBE_ITI_MAX_MS};
+  const PUT_URL = "{put_url_str}";
 
   const stage = document.getElementById('stage');
-  const msg   = document.getElementById('msg');
-  const prog  = document.getElementById('prog');
+  const msg = document.getElementById('msg');
+  const prog = document.getElementById('prog');
   const startBtn = document.getElementById('start-btn');
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -295,10 +235,10 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
       const onKey = (e) => {{
         if (resolved) return;
         let r = null;
-        if (e.key === 'ArrowUp')   r = 'up';
+        if (e.key === 'ArrowUp') r = 'up';
         if (e.key === 'ArrowDown') r = 'down';
         if (r === null) return;
-        e.preventDefault();  // Prevent page scrolling
+        e.preventDefault();
         e.stopPropagation();
         resolved = true;
         window.removeEventListener('keydown', onKey);
@@ -338,21 +278,15 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
 
   function summarise(results) {{
     const valid = results.filter(r => r.correct && r.response !== 'timeout');
-    const meanRT = valid.length
-      ? valid.reduce((s, r) => s + r.rt_ms, 0) / valid.length
-      : null;
-    const acc = results.length
-      ? results.filter(r => r.correct).length / results.length
-      : 0;
-    // Attentional bias index: mean RT(incongruent) - mean RT(congruent)
-    // Positive = vigilance toward threat
-    const cong   = valid.filter(r =>  r.is_congruent);
+    const meanRT = valid.length ? valid.reduce((s, r) => s + r.rt_ms, 0) / valid.length : null;
+    const acc = results.length ? results.filter(r => r.correct).length / results.length : 0;
+    const cong = valid.filter(r => r.is_congruent);
     const incong = valid.filter(r => !r.is_congruent);
-    const meanCong   = cong.length   ? cong.reduce((s,r)=>s+r.rt_ms,0)/cong.length   : null;
+    const meanCong = cong.length ? cong.reduce((s,r)=>s+r.rt_ms,0)/cong.length : null;
     const meanIncong = incong.length ? incong.reduce((s,r)=>s+r.rt_ms,0)/incong.length : null;
-    const bias = (meanCong !== null && meanIncong !== null)
-      ? Math.round((meanIncong - meanCong) * 100) / 100
-      : null;
+    const bias = (meanCong !== null && meanIncong !== null) 
+      ? Math.round((meanIncong - meanCong) * 100) / 100 : null;
+
     return {{
       num_trials: results.length,
       accuracy: Math.round(acc * 1000) / 1000,
@@ -364,6 +298,7 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
   }}
 
   async function uploadResults(payload) {{
+    if (!PUT_URL) return false;
     try {{
       const res = await fetch(PUT_URL, {{
         method: 'PUT',
@@ -380,11 +315,9 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
     startBtn.disabled = true;
     stage.focus();
     
-    // Prevent arrow key scrolling during entire task
     const preventScroll = (e) => {{
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {{
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
       }}
     }};
     window.addEventListener('keydown', preventScroll);
@@ -395,7 +328,6 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
       results.push(r);
     }}
     
-    // Re-enable scrolling after task
     window.removeEventListener('keydown', preventScroll);
     
     const summary = summarise(results);
@@ -404,19 +336,19 @@ def _build_html(trials, put_url, fixation_ms, words_ms,
       completed_timestamp: new Date().toISOString(),
     }});
     const ok = await uploadResults(payload);
+    
     clearStage();
     const done = document.createElement('div');
     done.className = 'msg';
     done.innerHTML = ok
       ? '<h2>✅ Task complete</h2><p>Please click <b>"I\\'ve finished the task"</b> below to continue.</p>'
-      : '<h2>⚠️ Could not save results</h2><p>Please notify your therapist — the task ran but the upload failed.</p>';
+      : '<h2>⚠️ Could not save results</h2><p>Please notify your therapist.</p>';
     stage.appendChild(done);
   }}
 
   startBtn.addEventListener('click', () => run().catch(err => {{
     msg.innerHTML = '<h3>Error</h3><pre>' + (err && err.message || err) + '</pre>';
   }}));
-  // Keep keystrokes focused on the stage so arrow keys work
   document.body.addEventListener('click', () => stage.focus());
 }})();
 </script>
