@@ -6,7 +6,7 @@ Optimized Sentence Completion Task - Same UX, Much Faster.
 
 import time
 import streamlit as st
-
+import random
 import config
 from utils.helpers import safe_progress, load_lines, now_iso
 from utils.validators import validate_ptc_response
@@ -30,6 +30,9 @@ def render(code: str, session_num: int, on_complete=None):
         st.error(f"⚠️ No sentences found at `{config.SENTENCES_PATH}`.")
         return
 
+
+    # === RANDOM SHUFFLE PER SESSION ===
+    random.shuffle(sentences)
     total = len(sentences)
 
     # Load existing progress

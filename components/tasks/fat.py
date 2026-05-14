@@ -1,10 +1,11 @@
 """
 components/tasks/fat.py
 ========================
-Optimized Free Association Task (FAT) - Same UI/UX, Much Faster.
+Optimized Free Association Task (FAT) - Random cue order per session.
 """
 
 import time
+import random
 import streamlit as st
 
 import config
@@ -31,10 +32,14 @@ def render(code: str, session_num: int, on_complete=None):
     logger = get_logger()
     base_path = f"ptc_training/session_{session_num}/fat"
 
+    # Load cue words and shuffle them randomly for this session
     cue_words = load_lines(config.CUE_WORDS_PATH)
     if not cue_words:
         st.error(f"⚠️ No cue words found at `{config.CUE_WORDS_PATH}`.")
         return
+
+    # === RANDOM SHUFFLE PER SESSION ===
+    random.shuffle(cue_words)
 
     total = len(cue_words)
 
@@ -89,13 +94,17 @@ def render(code: str, session_num: int, on_complete=None):
     if timer_key not in st.session_state:
         st.session_state[timer_key] = time.time()
 
-    # Form (kept exactly same)
+    # Form
     response_key = f"{base_path}_input_{completed_count}"
     form_key = f"{base_path}_form_{completed_count}"
     with st.form(form_key, clear_on_submit=True, border=False):
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            response = st.text_input("Response", key=response_key, placeholder="e.g., kind, calm, hopeful", label_visibility="collapsed")
+            response = st.text_input(
+                "", 
+                key=response_key,
+                placeholder="e.g., kind, calm, hopeful"
+            )
             submit = st.form_submit_button("Submit", type="primary", use_container_width=True)
 
     if submit:
@@ -137,7 +146,6 @@ def render(code: str, session_num: int, on_complete=None):
         if all_done:
             payload["completed_timestamp"] = now_iso()
 
-        # Non-blocking save
         logger.set(code, base_path, payload, sync=False)
 
         if not result["accepted"]:
@@ -148,7 +156,7 @@ def render(code: str, session_num: int, on_complete=None):
             feedback_placeholder.markdown(_format_feedback(f"⚠️ {msg}", color), unsafe_allow_html=True)
             return
 
-        # Success path
+        # Success
         st.session_state.pop(timer_key, None)
         clinical_msg = result.get("feedback") or "Accepted!"
         feedback_placeholder.markdown(
