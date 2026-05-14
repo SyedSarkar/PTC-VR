@@ -1,7 +1,7 @@
 """
 components/questionnaires/cbq_trait.py
 =======================================
-Cognitive Beliefs Questionnaire - Trait Version - 20 items, 1-6 scale.
+CBQ Trait Version
 """
 
 import config

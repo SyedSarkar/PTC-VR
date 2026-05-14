@@ -1,7 +1,7 @@
 """
 components/questionnaires/cbq.py
 =================================
-Cognitive Beliefs Questionnaire - 20 items, 1-6 scale.
+Cognitive Beliefs Questionnaire - 20 items
 """
 
 import config
