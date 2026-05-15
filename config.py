@@ -584,6 +584,8 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 CUE_WORDS_PATH = DATA_DIR / "cue_words.txt"
 SENTENCES_PATH = DATA_DIR / "sentences.txt"
 WSA_STIMULI_PATH = DATA_DIR / "wsa_stimuli.json"
+FAT_WORDS_CSV = DATA_DIR / "ptc_words.csv"
+PTC_SENTENCE_CSV = DATA_DIR / "ptc_sentence.csv"
 
 # ============================================================================
 # UI THEME

@@ -9,7 +9,7 @@ import random
 import streamlit as st
 
 import config
-from utils.helpers import safe_progress, load_lines, now_iso
+from utils.helpers import safe_progress, load_lines, load_csv_column_by_session, now_iso
 from utils.validators import validate_ptc_response
 from utils.data_logger import get_logger
 
@@ -32,14 +32,19 @@ def render(code: str, session_num: int, on_complete=None):
     logger = get_logger()
     base_path = f"ptc_training/session_{session_num}/fat"
 
-    # Load cue words and shuffle them randomly for this session
-    cue_words = load_lines(config.CUE_WORDS_PATH)
+    # Load cue words from CSV filtered by session (shuffle only once per session)
+    cue_words = load_csv_column_by_session(config.FAT_WORDS_CSV, session_num, "Word")
     if not cue_words:
-        st.error(f"⚠️ No cue words found at `{config.CUE_WORDS_PATH}`.")
+        st.error(f"⚠️ No cue words found for Session {session_num} in `{config.FAT_WORDS_CSV}`.")
         return
 
-    # === RANDOM SHUFFLE PER SESSION ===
-    random.shuffle(cue_words)
+    # Shuffle once per session and store in session state
+    shuffle_key = f"{base_path}_shuffled_cues"
+    if shuffle_key not in st.session_state:
+        shuffled = cue_words.copy()
+        random.shuffle(shuffled)
+        st.session_state[shuffle_key] = shuffled
+    cue_words = st.session_state[shuffle_key]
 
     total = len(cue_words)
 

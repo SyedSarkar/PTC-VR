@@ -8,7 +8,7 @@ import time
 import streamlit as st
 import random
 import config
-from utils.helpers import safe_progress, load_lines, now_iso
+from utils.helpers import safe_progress, load_lines, load_csv_column_by_session, now_iso
 from utils.validators import validate_ptc_response
 from utils.data_logger import get_logger
 
@@ -25,14 +25,20 @@ def render(code: str, session_num: int, on_complete=None):
     logger = get_logger()
     base_path = f"ptc_training/session_{session_num}/sentence_completion"
 
-    sentences = load_lines(config.SENTENCES_PATH)
+    # Load sentences from CSV filtered by session
+    sentences = load_csv_column_by_session(config.PTC_SENTENCE_CSV, session_num, "Word")
     if not sentences:
-        st.error(f"⚠️ No sentences found at `{config.SENTENCES_PATH}`.")
+        st.error(f"⚠️ No sentences found for Session {session_num} in `{config.PTC_SENTENCE_CSV}`.")
         return
 
 
-    # === RANDOM SHUFFLE PER SESSION ===
-    random.shuffle(sentences)
+    # Shuffle once per session and store in session state
+    shuffle_key = f"{base_path}_shuffled_sentences"
+    if shuffle_key not in st.session_state:
+        shuffled = sentences.copy()
+        random.shuffle(shuffled)
+        st.session_state[shuffle_key] = shuffled
+    sentences = st.session_state[shuffle_key]
     total = len(sentences)
 
     # Load existing progress

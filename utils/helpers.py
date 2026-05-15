@@ -118,6 +118,35 @@ def load_lines(path: Path) -> list[str]:
         return [line.strip() for line in f if line.strip()]
 
 
+def load_csv_column_by_session(csv_path: Path, session_num: int, column_name: str = "Word") -> list[str]:
+    """
+    Load values from a CSV file filtered by session number.
+    
+    CSV structure expected: Sr#, Code, Word, Block, Session
+    Returns a list of values from the specified column for rows matching the session.
+    """
+    if not csv_path.exists():
+        return []
+    
+    try:
+        import csv
+        with open(csv_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            values = []
+            for row in reader:
+                try:
+                    row_session = int(row.get("Session", 0))
+                    if row_session == session_num:
+                        value = row.get(column_name, "").strip()
+                        if value:
+                            values.append(value)
+                except (ValueError, KeyError):
+                    continue
+            return values
+    except Exception:
+        return []
+
+
 # ============================================================================
 # SCALE LABEL FORMATTING
 # ============================================================================
