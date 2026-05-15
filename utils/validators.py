@@ -176,8 +176,7 @@ def _repetition_layer(phrase: str, used_responses: set[str], repeats_used: int) 
 def validate_ptc_response(
     response: str,
     cue: str,
-    used_responses: set[str],
-    repeats_used: int,
+    word_counts: dict[str, int],
 ) -> dict:
     raw_response = (response or "").strip()
     phrase = raw_response.lower()
@@ -200,14 +199,15 @@ def validate_ptc_response(
     if hard_neg:
         return _build_reject("negative", f"Word '{hard_neg}' is not allowed.", raw_response, phrase)
 
-    # === FIXED REPETITION LOGIC ===
-    is_repeat = phrase in used_responses
-    over_quota = is_repeat and (repeats_used >= config.PTC_MAX_REPEATS_ALLOWED)
+    # === PER-WORD REPETITION LOGIC ===
+    current_count = word_counts.get(phrase, 0)
+    is_repeat = current_count > 0
+    over_quota = current_count >= config.PTC_MAX_REPEATS_ALLOWED
 
     if over_quota:
         return _build_reject(
             "used",
-            f"Already used {repeats_used} time(s). Please use a different word.",
+            f"Already used {current_count} time(s). Please use a different word.",
             raw_response, phrase, is_repeat=True
         )
 
@@ -230,7 +230,7 @@ def validate_ptc_response(
         "raw_response": raw_response,
         "normalized_response": phrase,
         "validation_layers": {
-            "repetition": {"is_repeated": is_repeat, "repeats_used_so_far": repeats_used}
+            "repetition": {"is_repeated": is_repeat, "repeats_used_so_far": current_count}
         }
     }
 

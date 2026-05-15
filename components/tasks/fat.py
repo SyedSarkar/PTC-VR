@@ -49,15 +49,9 @@ def render(code: str, session_num: int, on_complete=None):
     if isinstance(existing_responses, dict):
         existing_responses = [v for _, v in sorted(existing_responses.items(), key=lambda x: int(x[0]))]
 
-    # === CORRECT CALCULATION ===
+    # === CURRENT PROGRESS ===
     completed_count = sum(1 for r in existing_responses if r and r.get("accepted"))
     score_so_far = sum(int(r.get("score", 0)) for r in existing_responses if r)
-    
-    used = {str(r.get("response", "")).lower() 
-            for r in existing_responses if r and r.get("accepted")}
-    
-    repeats_used = sum(1 for r in existing_responses 
-                      if r and r.get("accepted") and r.get("is_repeat"))
 
     if completed_count >= total:
         st.success(f"✅ FAT Session {session_num} complete!")
@@ -78,7 +72,7 @@ def render(code: str, session_num: int, on_complete=None):
     with cols[0]:
         st.markdown(f"<div class='points-banner'>Points: {score_so_far}</div>", unsafe_allow_html=True)
     with cols[2]:
-        st.markdown(f"<div class='progress-text' style='text-align:right;'>Word {completed_count + 1} of {total}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='progress-text' style='text-align:right</div>", unsafe_allow_html=True)
 
     st.progress(safe_progress(completed_count, total))
 
@@ -103,9 +97,16 @@ def render(code: str, session_num: int, on_complete=None):
 
     if submit:
         rt = round(time.time() - st.session_state[timer_key], 2)
-        
-        # Pass current repeats_used to validator
-        result = validate_ptc_response(response, cue, used, repeats_used)
+
+        # === CRITICAL FIX: Build word_counts dictionary for per-word repeat tracking ===
+        word_counts = {}
+        for r in existing_responses:
+            if r and r.get("accepted"):
+                word = str(r.get("normalized_response", "")).strip().lower()
+                if word:
+                    word_counts[word] = word_counts.get(word, 0) + 1
+
+        result = validate_ptc_response(response, cue, word_counts)
 
         entry = {
             "cue_index": completed_count,
@@ -126,7 +127,7 @@ def render(code: str, session_num: int, on_complete=None):
         existing_responses.append(entry)
 
         new_score = score_so_far + (entry["score"] if result["accepted"] else 0)
-        new_repeats = repeats_used + (1 if (result["accepted"] and entry["is_repeat"]) else 0)
+        new_repeats = sum(1 for r in existing_responses if r and r.get("accepted") and r.get("is_repeat"))
         accepted_count_after = completed_count + (1 if result["accepted"] else 0)
 
         payload = {
@@ -143,7 +144,7 @@ def render(code: str, session_num: int, on_complete=None):
         # ====================== FEEDBACK ======================
         if not result["accepted"]:
             if result["reason"] == "used":
-                msg = f"Already used {repeats_used} time(s). Please use a different word."
+                msg = f"Already used 2 times. Please use a different word."
                 feedback_placeholder.markdown(_format_feedback(f"⚠️ {msg}", "#e67e22"), unsafe_allow_html=True)
             else:
                 feedback_placeholder.markdown(
