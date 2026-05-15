@@ -1,0 +1,41 @@
+Trial,Block,Pair Type,TOP Word,BOTTOM Word,Dot Position
+1,1,Threat-Neutral,Scared,Things,BOTTOM
+2,1,Threat-Neutral,Fragrance,Pressured,TOP
+3,1,Threat-Neutral,Uneasy,Method,BOTTOM
+4,1,Threat-Neutral,Movement,Threatened,BOTTOM
+5,1,Threat-Neutral,Disliked,Meaning,TOP
+6,1,Threat-Neutral,Passage,Awkward,BOTTOM
+7,1,Threat-Neutral,Cornered,System,BOTTOM
+8,1,Threat-Neutral,Information,Suffocated,BOTTOM
+9,1,Threat-Neutral,Repressed,Situation,BOTTOM
+10,1,Threat-Neutral,Action,Left out,BOTTOM
+11,1,Threat-Neutral,Disconnected,Consciousness,TOP
+12,1,Threat-Neutral,To move,Detached,TOP
+13,1,Threat-Neutral,Escaping,Question,BOTTOM
+14,1,Threat-Neutral,Research,Analyzed,TOP
+15,1,Threat-Neutral,Watched,Flock,TOP
+16,1,Threat-Neutral,Possibility,Speechless,TOP
+17,1,Threat-Neutral,Regretting,Duration,TOP
+18,1,Threat-Neutral,Government,Scrutinized,BOTTOM
+19,1,Threat-Neutral,Dumb,Tour,BOTTOM
+20,1,Threat-Neutral,Study,Stuck,BOTTOM
+21,2,Threat-Neutral (repeat),Thing,Scared,BOTTOM
+22,2,Threat-Neutral (repeat),Pressured,Feeling,BOTTOM
+23,2,Threat-Neutral (repeat),Effort,Uneasy,TOP
+24,2,Threat-Neutral (repeat),Threatened,Attention,TOP
+25,2,Threat-Neutral (repeat),Season,Disliked,BOTTOM
+26,2,Threat-Neutral (repeat),Awkward,School,TOP
+27,2,Threat-Neutral (repeat),Services,Cornered,TOP
+28,2,Threat-Neutral (repeat),Suffocated,Document,BOTTOM
+29,2,Threat-Neutral (repeat),Material,Repressed,BOTTOM
+30,2,Threat-Neutral (repeat),Left out,Color,BOTTOM
+31,3,Neutral-Neutral,Map,Sky,TOP
+32,3,Neutral-Neutral,Fan,Talk,BOTTOM
+33,3,Neutral-Neutral,City,Life,BOTTOM
+34,3,Neutral-Neutral,Path,Food,BOTTOM
+35,3,Neutral-Neutral,Book,Area,TOP
+36,3,Neutral-Neutral,Tone,Mood,BOTTOM
+37,3,Neutral-Neutral,Hope,Type,TOP
+38,3,Neutral-Neutral,Sign,Work,TOP
+39,3,Neutral-Neutral,Lamp,Check,BOTTOM
+40,3,Neutral-Neutral,World,Money,TOP

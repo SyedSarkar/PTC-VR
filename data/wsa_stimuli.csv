@@ -1,0 +1,41 @@
+Trial #,Block,Word Type,Word,Sentence
+1,1,Threat,Avoid,You are invited to a party
+2,1,Threat,Ignored,Friend checks phone while you talk
+3,1,Benign,Praise,Your boss wants to meet with you
+4,1,Threat,Dumb,People judge the speech you just gave
+5,1,Benign,Drink,You are offered some coffee
+6,1,Threat,Foolish,You ask for assistance from your professor
+7,1,Threat,Exclude,You are added late to the chat
+8,1,Benign,Funny,You spill a little water on your shirt at dinner
+9,1,Benign,Admire,Someone you like says hello to you
+10,1,Benign,Funny,People laugh after something you said
+11,2,Benign,Intelligent,You give advice to a friend
+12,2,Benign,Discussing,Classmates whisper and look at you
+13,2,Benign,Cool,Someone looks at you as you walk by
+14,2,Threat,Stay home,Your friend asks you to go to a party
+15,2,Threat,Judged,Class falls silent after your answer
+16,2,Benign,Respected,Everyone stops talking when you enter the room
+17,2,Threat,Panicked,Your breathing is different than usual
+18,2,Threat,Foolish,You share an idea with someone
+19,2,Benign,Admire,Someone introduces themselves to you
+20,2,Threat,Stupid,You just finished taking an oral exam
+21,3,Benign,Notification,Friend checks phone while you talk
+22,3,Threat,Criticize,Your boss wants to meet with you
+23,3,Benign,Guidance,You ask for assistance from your professor
+24,3,Threat,Refuse,You are offered some coffee
+25,3,Benign,Intelligent,People judge the speech you just gave
+26,3,Threat,Embarrassing,People laugh after something you said
+27,3,Threat,Pity,Someone you like says hello to you
+28,3,Threat,Embarrassing,You spill a little water on your shirt at dinner
+29,3,Benign,Fun,You are invited to a party
+30,3,Benign,Update,You are added late to the chat
+31,4,Threat,Dumb,You give advice to a friend
+32,4,Threat,Pity,Someone introduces themselves to you
+33,4,Threat,Mocked,Everyone stops talking when you enter the room
+34,4,Benign,Excited,Your breathing is different than usual
+35,4,Benign,Smart,You just finished taking an oral exam
+36,4,Threat,Teasing,Classmates whisper and look at you
+37,4,Benign,Enjoy,Your friend asks you to go to a party
+38,4,Threat,Weird,Someone looks at you as you walk by
+39,4,Benign,Focused,Class falls silent after your answer
+40,4,Benign,Intelligent,You share an idea with someone

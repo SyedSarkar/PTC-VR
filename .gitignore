@@ -57,10 +57,6 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-# Data exports (generated)
-*.xlsx
-*.xls
-*.csv
 
 # Logs
 *.log

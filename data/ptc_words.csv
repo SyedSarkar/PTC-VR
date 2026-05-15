@@ -1,0 +1,361 @@
+Sr#,Code,Word,Block,Session
+1,ETW-1,Taunted,A1,1
+2,ETW-2,Inferior,A1,1
+3,ETW-3,Reluctant,A1,1
+4,ETW-4,Unconfident,A1,1
+5,ETW-5,Discomfort,A1,1
+6,ETW-6,Self-doubt,A1,1
+7,ETW-7,Worthless,A1,1
+8,ETW-8,Glared,A1,1
+9,ETW-9,Misjudged,A1,1
+10,ETW-10,Inept,A1,1
+11,ETW-11,Stress,A1,1
+12,ETW-12,Guilt,A1,1
+13,ETW-13,Stupid,A1,1
+14,ETW-14,Stares,A1,1
+15,ETW-15,Mocked,A1,1
+16,ETW-16,Unworthy,A1,1
+17,ETW-17,Nervous,A1,1
+18,ETW-18,Ignored,A1,1
+19,ETW-19,Unnoticed,A1,1
+20,ETW-20,Panic,A1,1
+21,EPW-1,Ability,A1,1
+22,EPW-2,Competent,A1,1
+23,EPW-3,Confidence,A1,1
+24,EPW-4,Peace,A1,1
+25,EPW-5,Bright,A1,1
+26,EPW-6,Encouragement,A1,1
+27,EPW-7,Flexible,A1,1
+28,EPW-8,Generous,A1,1
+29,EPW-9,Gracious,A1,1
+30,EPW-10,Ready,A1,1
+1,ETW-81,Shamed,B1,1
+2,ETW-82,Degraded,B1,1
+3,ETW-83,Hurt,B1,1
+4,ETW-84,Hiding,B1,1
+5,ETW-85,Insecure,B1,1
+6,ETW-86,Doubt,B1,1
+7,ETW-87,Compared,B1,1
+8,ETW-88,Judged,B1,1
+9,ETW-89,Trembling,B1,1
+10,ETW-90,Weakness,B1,1
+11,ETW-91,Unheard,B1,1
+12,ETW-92,Bothered,B1,1
+13,ETW-93,Trapped,B1,1
+14,ETW-94,Audience,B1,1
+15,ETW-95,Stigmatized,B1,1
+16,ETW-96,Laugh at,B1,1
+17,ETW-97,Teased,B1,1
+18,ETW-98,Blanked,B1,1
+19,ETW-99,Disrespected,B1,1
+20,ETW-100,Neglected,B1,1
+21,EPW-11,Loving,B1,1
+22,EPW-12,Stable,B1,1
+23,EPW-13,Joyful,B1,1
+24,EPW-14,Influence,B1,1
+25,EPW-15,Grateful,B1,1
+26,EPW-16,Spirit,B1,1
+27,EPW-17,Amazing,B1,1
+28,EPW-18,Included,B1,1
+29,EPW-19,Understood,B1,1
+30,EPW-20,Valued,B1,1
+1,ETW-1, Taunted,C1,1
+2,ETW-2, Inferior,C1,1
+3,ETW-3, Reluctant,C1,1
+4,ETW-4, Unconfident,C1,1
+5,ETW-5, Discomfort,C1,1
+6,ETW-41,Deficient,C1,1
+7,ETW-42,Defeated,C1,1
+8,ETW-43,Terrified,C1,1
+9,ETW-44,Stressed,C1,1
+10,ETW-45,Distressed,C1,1
+11,ETW-46,Afraid,C1,1
+12,ETW-47,Overpowered,C1,1
+13,ETW-48,Defamed,C1,1
+14,ETW-49,Weak,C1,1
+15,ETW-50,Excluded,C1,1
+16,ETW-51,Unstable,C1,1
+17,ETW-52,Backing out,C1,1
+18,ETW-53,Ridiculed,C1,1
+19,ETW-54,Blamed,C1,1
+20,ETW-55,Disrespect,C1,1
+21,EPW-21,Honored,C1,1
+22,EPW-22,Calm,C1,1
+23,EPW-23,Resilient,C1,1
+24,EPW-24,Caring,C1,1
+25,EPW-25,Accepted,C1,1
+26,EPW-26,Remembered,C1,1
+27,EPW-27,Courage,C1,1
+28,EPW-28,Patience,C1,1
+29,EPW-29,Team,C1,1
+30,EPW-30,Confident,C1,1
+1,ETW-21, Apprehension,A2,2
+2,ETW-22, Tired,A2,2
+3,ETW-23, Shaky,A2,2
+4,ETW-24, Withdrawing,A2,2
+5,ETW-25, Reserved,A2,2
+6,ETW-26,Frustration,A2,2
+7,ETW-27,Uncertain,A2,2
+8,ETW-28,Offended,A2,2
+9,ETW-29,Choking,A2,2
+10,ETW-30,Uninvited,A2,2
+11,ETW-31,Clumsy,A2,2
+12,ETW-32,Judgment,A2,2
+13,ETW-33,Sidelined,A2,2
+14,ETW-34,Disapproved,A2,2
+15,ETW-35,Snubbed,A2,2
+16,ETW-36,Unfit,A2,2
+17,ETW-37,Sweating,A2,2
+18,ETW-38,Forgotten,A2,2
+19,ETW-39,Helpless,A2,2
+20,ETW-40,Pulling back,A2,2
+21,EPW-31,Deserving,A2,2
+22,EPW-32,Participating,A2,2
+23,EPW-33,Active,A2,2
+24,EPW-34,Authentic,A2,2
+25,EPW-35,Respectful,A2,2
+26,EPW-36,Proud,A2,2
+27,EPW-37,Encouraged,A2,2
+28,EPW-38,Welcomed,A2,2
+29,EPW-39,Capable,A2,2
+30,EPW-40,Fluent,A2,2
+1,ETW-101,Isolated,B2,2
+2,ETW-102,Unresponsive,B2,2
+3,ETW-103,Unskilled,B2,2
+4,ETW-104,Terror,B2,2
+5,ETW-105,Dismissed,B2,2
+6,ETW-106,Dishonored,B2,2
+7,ETW-107,Characterless,B2,2
+8,ETW-108,Abandoned,B2,2
+9,ETW-109,Embarrassed,B2,2
+10,ETW-110,Rejected,B2,2
+11,ETW-111,Insulted,B2,2
+12,ETW-112,Palpitations,B2,2
+13,ETW-113,Embarrassment,B2,2
+14,ETW-114,Scolded,B2,2
+15,ETW-115,Pathetic,B2,2
+16,ETW-116,Outcast,B2,2
+17,ETW-117,Hesitant,B2,2
+18,ETW-118,Timid,B2,2
+19,ETW-119,Fearful,B2,2
+20,ETW-120,Self-critical,B2,2
+21,EPW-41,Together,B2,2
+22,EPW-42,Noticed,B2,2
+23,EPW-43,Determined,B2,2
+24,EPW-44,Smart,B2,2
+25,EPW-45,Empowered,B2,2
+26,EPW-46,Forgiving,B2,2
+27,EPW-47,Relieve,B2,2
+28,EPW-48,Natural,B2,2
+29,EPW-49,Jolly,B2,2
+30,EPW-50,Attractive,B2,2
+1,ETW-21, Apprehension,C2,2
+2,ETW-22, Tired,C2,2
+3,ETW-23, Shaky,C2,2
+4,ETW-24, Withdrawing,C2,2
+5,ETW-25, Reserved,C2,2
+6,ETW-56,Fragile,C2,2
+7,ETW-57,Vulnerable,C2,2
+8,ETW-58,Imperfect,C2,2
+9,ETW-59,Doubting,C2,2
+10,ETW-60,Hated,C2,2
+11,ETW-61,Exposed,C2,2
+12,ETW-62,Lightheaded,C2,2
+13,ETW-63,Bullied,C2,2
+14,ETW-64,Unwanted,C2,2
+15,ETW-65,Inadequate,C2,2
+16,ETW-66,Misunderstood,C2,2
+17,ETW-67,Shy,C2,2
+18,ETW-68,Confused,C2,2
+19,ETW-69,Powerless,C2,2
+20,ETW-70,Faint,C2,2
+21,EPW-51,Important,C2,2
+22,EPW-52,Attentive,C2,2
+23,EPW-53,Kind,C2,2
+24,EPW-54,Wanted,C2,2
+25,EPW-55,Gifted,C2,2
+26,EPW-56,Equal,C2,2
+27,EPW-57,Acceptance,C2,2
+28,EPW-58,Peaceful,C2,2
+29,EPW-59,Fearless,C2,2
+30,EPW-60,Gift,C2,2
+1,ETW-6,Self-doubt,A3,3
+2,ETW-7,Worthless,A3,3
+3,ETW-8,Glared,A3,3
+4,ETW-9,Misjudged,A3,3
+5,ETW-10,Inept,A3,3
+6,ETW-11,Stress,A3,3
+7,ETW-12,Guilt,A3,3
+8,ETW-13,Stupid,A3,3
+9,ETW-14,Stares,A3,3
+10,ETW-15,Mocked,A3,3
+11,ETW-16,Unworthy,A3,3
+12,ETW-17,Nervous,A3,3
+13,ETW-18,Ignored,A3,3
+14,ETW-19,Unnoticed,A3,3
+15,ETW-20,Panic,A3,3
+16,ETW-71, Unseen,A3,3
+17,ETW-72, Unwelcomed,A3,3
+18,ETW-73, Doubtful,A3,3
+19,ETW-74, Worried,A3,3
+20,ETW-75, Hopeless,A3,3
+21,EPW-61,Enjoy,A3,3
+22,EPW-62,Respected,A3,3
+23,EPW-63,Brave,A3,3
+24,EPW-64,Committed,A3,3
+25,EPW-65,Unique,A3,3
+26,EPW-66,Refreshed,A3,3
+27,EPW-67,Comfort,A3,3
+28,EPW-68,Invite,A3,3
+29,EPW-69,Excited,A3,3
+30,EPW-70,Supported,A3,3
+1,ETW-81,Shamed,B3,3
+2,ETW-82,Degraded,B3,3
+3,ETW-83,Hurt,B3,3
+4,ETW-84,Hiding,B3,3
+5,ETW-85,Insecure,B3,3
+6,ETW-86,Doubt,B3,3
+7,ETW-87,Compared,B3,3
+8,ETW-88,Judged,B3,3
+9,ETW-89,Trembling,B3,3
+10,ETW-90,Weakness,B3,3
+11,ETW-91,Unheard,B3,3
+12,ETW-92,Bothered,B3,3
+13,ETW-93,Trapped,B3,3
+14,ETW-94,Audience,B3,3
+15,ETW-95,Stigmatized,B3,3
+16,ETW-96,Laugh at,B3,3
+17,ETW-97,Teased,B3,3
+18,ETW-98,Blanked,B3,3
+19,ETW-99,Disrespected,B3,3
+20,ETW-100,Neglected,B3,3
+21,EPW-71,Understanding,B3,3
+22,EPW-72,Intelligent,B3,3
+23,EPW-73,Glory,B3,3
+24,EPW-74,Appreciated,B3,3
+25,EPW-75,Liked,B3,3
+26,EPW-76,Inspired,B3,3
+27,EPW-77,Joy,B3,3
+28,EPW-78,Uplifting,B3,3
+29,EPW-79,Dream,B3,3
+30,EPW-80,Growth,B3,3
+1,ETW-71, Unseen,C3,3
+2,ETW-72, Unwelcomed,C3,3
+3,ETW-73, Doubtful,C3,3
+4,ETW-74, Worried,C3,3
+5,ETW-75, Hopeless,C3,3
+6,ETW-56,Fragile,C3,3
+7,ETW-57,Vulnerable,C3,3
+8,ETW-58,Imperfect,C3,3
+9,ETW-59,Doubting,C3,3
+10,ETW-60,Hated,C3,3
+11,ETW-61,Exposed,C3,3
+12,ETW-62,Lightheaded,C3,3
+13,ETW-63,Bullied,C3,3
+14,ETW-64,Unwanted,C3,3
+15,ETW-65,Inadequate,C3,3
+16,ETW-66,Misunderstood,C3,3
+17,ETW-67,Shy,C3,3
+18,ETW-68,Confused,C3,3
+19,ETW-69,Powerless,C3,3
+20,ETW-70,Faint,C3,3
+21,EPW-81,Comfortable,C3,3
+22,EPW-82,Cared,C3,3
+23,EPW-83,Interactive,C3,3
+24,EPW-84,Happy,C3,3
+25,EPW-85,Passionate,C3,3
+26,EPW-86,Cared for,C3,3
+27,EPW-87,Hopeful,C3,3
+28,EPW-88,Leading,C3,3
+29,EPW-89,United,C3,3
+30,EPW-90,Honest,C3,3
+1,ETW-76, Shaken,A4,4
+2,ETW-77, Confusion,A4,4
+3,ETW-78, Unwilling,A4,4
+4,ETW-79, Silenced,A4,4
+5,ETW-80, Undervalued,A4,4
+6,ETW-41,Deficient,A4,4
+7,ETW-42,Defeated,A4,4
+8,ETW-43,Terrified,A4,4
+9,ETW-44,Stressed,A4,4
+10,ETW-45,Distressed,A4,4
+11,ETW-46,Afraid,A4,4
+12,ETW-47,Overpowered,A4,4
+13,ETW-48,Defamed,A4,4
+14,ETW-49,Weak,A4,4
+15,ETW-50,Excluded,A4,4
+16,ETW-51,Unstable,A4,4
+17,ETW-52,Backing out,A4,4
+18,ETW-53,Ridiculed,A4,4
+19,ETW-54,Blamed,A4,4
+20,ETW-55,Disrespect,A4,4
+21,EPW-91,Cherished,A4,4
+22,EPW-92,Open,A4,4
+23,EPW-93,Sociable,A4,4
+24,EPW-94,Clarity,A4,4
+25,EPW-95,Trusted,A4,4
+26,EPW-96,Greeted,A4,4
+27,EPW-97,Invited,A4,4
+28,EPW-98,Valuable,A4,4
+29,EPW-99,Worthy,A4,4
+30,EPW-100,Safe,A4,4
+1,ETW-101,Isolated,B4,4
+2,ETW-102,Unresponsive,B4,4
+3,ETW-103,Unskilled,B4,4
+4,ETW-104,Terror,B4,4
+5,ETW-105,Dismissed,B4,4
+6,ETW-106,Dishonored,B4,4
+7,ETW-107,Characterless,B4,4
+8,ETW-108,Abandoned,B4,4
+9,ETW-109,Embarrassed,B4,4
+10,ETW-110,Rejected,B4,4
+11,ETW-111,Insulted,B4,4
+12,ETW-112,Palpitations,B4,4
+13,ETW-113,Embarrassment,B4,4
+14,ETW-114,Scolded,B4,4
+15,ETW-115,Pathetic,B4,4
+16,ETW-116,Outcast,B4,4
+17,ETW-117,Hesitant,B4,4
+18,ETW-118,Timid,B4,4
+19,ETW-119,Fearful,B4,4
+20,ETW-120,Self-critical,B4,4
+21,EPW-101,Nurtured,B4,4
+22,EPW-102,Success,B4,4
+23,EPW-103,Shine,B4,4
+24,EPW-104,Engaged,B4,4
+25,EPW-105,Celebrating,B4,4
+26,EPW-106,Supporters,B4,4
+27,EPW-107,Dignified,B4,4
+28,EPW-108,Soothing,B4,4
+29,EPW-109,Mighty,B4,4
+30,EPW-110,Strong,B4,4
+1,ETW-76, Shaken,C4,4
+2,ETW-77, Confusion,C4,4
+3,ETW-78, Unwilling,C4,4
+4,ETW-79, Silenced,C4,4
+5,ETW-80, Undervalued,C4,4
+6,ETW-26,Frustration,C4,4
+7,ETW-27,Uncertain,C4,4
+8,ETW-28,Offended,C4,4
+9,ETW-29,Choking,C4,4
+10,ETW-30,Uninvited,C4,4
+11,ETW-31,Clumsy,C4,4
+12,ETW-32,Judgment,C4,4
+13,ETW-33,Sidelined,C4,4
+14,ETW-34,Disapproved,C4,4
+15,ETW-35,Snubbed,C4,4
+16,ETW-36,Unfit,C4,4
+17,ETW-37,Sweating,C4,4
+18,ETW-38,Forgotten,C4,4
+19,ETW-39,Helpless,C4,4
+20,ETW-40,Pulling back,C4,4
+21,EPW-111,Secure,C4,4
+22,EPW-112,Affiliated,C4,4
+23,EPW-113,Eager,C4,4
+24,EPW-114,Self-honoring,C4,4
+25,EPW-115,Focused,C4,4
+26,EPW-116,Willing,C4,4
+27,EPW-117,Expert,C4,4
+28,EPW-118,Welcoming,C4,4
+29,EPW-119,Warm,C4,4
+30,EPW-120,Supportive,C4,4

@@ -1,0 +1,361 @@
+Sr#,Code,Word,Block,Session
+1,SCT-T65,Talking to authorities feels...,A1,1
+2,SCT-T98,I feel ___ when questioned directly,A1,1
+3,SCT-T85,I feel ___ during conversation,A1,1
+4,SCT-T54,"During my turn, I feel...",A1,1
+5,SCT-T100,I feel ___ when expressing ideas,A1,1
+6,SCT-T105,I feel ___ expressing my opinions,A1,1
+7,SCT-T41,"When answering questions, I appear...",A1,1
+8,SCT-T106,It is ___ to share my ideas publicly,A1,1
+9,SCT-T10,"When teacher comments, I feel...",A1,1
+10,SCT-T102,I feel ___ beside confident people,A1,1
+11,SCT-T94,I appear ___ while speaking,A1,1
+12,SCT-T47,Asking questions makes me feel...,A1,1
+13,SCT-T72,Asking others for help feels...,A1,1
+14,SCT-T119,Asking question during a lecture feels...,A1,1
+15,SCT-T109,I feel ___ before my turn,A1,1
+16,SCT-T2,Being interrupted makes me feel...,A1,1
+17,SCT-T24,My family believes I am...,A1,1
+18,SCT-T38,Relatives describe me as...,A1,1
+19,SCT-T79,Being included in task makes me...,A1,1
+20,SCT-T39,"In class activities, I am usually...",A1,1
+21,SCT-P129,The park feels truly ___,A1,1
+22,SCT-P36,My spirit is truly ___,A1,1
+23,SCT-P16,The day started very ___,A1,1
+24,SCT-P152,The stillness feels very ___,A1,1
+25,SCT-P17,I live a ___ life,A1,1
+26,SCT-P46,My path is truly ___,A1,1
+27,SCT-P104,My purpose is very ___,A1,1
+28,SCT-P164,I feel protected and ___,A1,1
+29,SCT-P144,My art feels very ___,A1,1
+30,SCT-P19,I feel ___ every day,A1,1
+1,SCT-T15,"In group settings, I am...",B1,1
+2,SCT-T7,"In group study, I am usually...",B1,1
+3,SCT-T31,"In groups, I am often...",B1,1
+4,SCT-T28,Others often think I am...,B1,1
+5,SCT-T62,Being watched makes me ...,B1,1
+6,SCT-T30,I handle attention by feeling...,B1,1
+7,SCT-T20,"In public, I appear...",B1,1
+8,SCT-T9,I feel...when others observe me.,B1,1
+9,SCT-T73,Being pointed out feels...,B1,1
+10,SCT-T16,Being seen makes me feel...,B1,1
+11,SCT-T33,"When people stare, I feel...",B1,1
+12,SCT-T6,People watch me as I am...,B1,1
+13,SCT-T34,Classmates often see me as...,B1,1
+14,SCT-T76,Peers usually see me as...,B1,1
+15,SCT-T21,Friends usually find me very...,B1,1
+16,SCT-T17,I am often described as...,B1,1
+17,SCT-T23,I am seen as very...,B1,1
+18,SCT-T95,Others often find me ___,B1,1
+19,SCT-T80,Being in front of line feels...,B1,1
+20,SCT-T89,I seem ___ while taking initiative,B1,1
+21,SCT-P146,The creative work feels ___,B1,1
+22,SCT-P31,The sky looks very ___,B1,1
+23,SCT-P154,My calm spirit is ___,B1,1
+24,SCT-P10,Good things are ___,B1,1
+25,SCT-P12,I have great ___ ahead,B1,1
+26,SCT-P102,My imagination is very ___,B1,1
+27,SCT-P73,I am a ___ person,B1,1
+28,SCT-P92,I found my true ___,B1,1
+29,SCT-P42,The little things feel ___,B1,1
+30,SCT-P50,I celebrate being very ___,B1,1
+1,SCT-T49,"During viva, I am usually...",C1,1
+2,SCT-T77,Handling challenges publicly feels...,C1,1
+3,SCT-T36,"During presentations, I appear...",C1,1
+4,SCT-T52,"When presenting, I feel...",C1,1
+5,SCT-T88,I appear ___ during public interactions,C1,1
+6,SCT-T81,Making mistakes publicly feels...,C1,1
+7,SCT-T57,"Introducing myself publicly, I feel...",C1,1
+8,SCT-T58,"Performing task publicly, I feel...",C1,1
+9,SCT-T111,My body feels ___ during social gathering,C1,1
+10,SCT-T103,My hands become ___ while presentation.,C1,1
+11,SCT-T82,My voice remains ___ during presentation.,C1,1
+12,SCT-T59,Attending a social event feels...,C1,1
+13,SCT-T48,"In social situations, I become...",C1,1
+14,SCT-T90,I behave ___ during social situations,C1,1
+15,SCT-T3,Talking to strangers feels...,C1,1
+16,SCT-T97,I feel ___ in unfamiliar groups,C1,1
+17,SCT-T110,I feel ___ walking into gatherings,C1,1
+18,SCT-T61,Approaching strangers feels...,C1,1
+19,SCT-T68,"Being around others, I feel...",C1,1
+20,SCT-T86,I become ___ around strangers,C1,1
+21,SCT-P2,Life feels truly ___,C1,1
+22,SCT-P8,My day was truly ___,C1,1
+23,SCT-P65,I remain very ___ always,C1,1
+24,SCT-P41,I grow stronger and ___,C1,1
+25,SCT-P97,I grow with great ___,C1,1
+26,SCT-P110,I reached my ___ goal,C1,1
+27,SCT-P26,My home feels very ___,C1,1
+28,SCT-P98,I feel ___ and healthy,C1,1
+29,SCT-P27,I deserve all ___,C1,1
+30,SCT-P159,I am grateful for ___,C1,1
+1,SCT-T4,Standing in crowds feels...,A2,2
+2,SCT-T99,I feel ___ in daily people interaction,A2,2
+3,SCT-T8,"In gatherings, I often feel...",A2,2
+4,SCT-T63,"Compared to others, I am...",A2,2
+5,SCT-T25,I am known as ____ person.,A2,2
+6,SCT-T51,I am a person who is...,A2,2
+7,SCT-T65,Talking to authorities feels...,A2,2
+8,SCT-T98,I feel ___ when questioned directly,A2,2
+9,SCT-T85,I feel ___ during conversation,A2,2
+10,SCT-T54,"During my turn, I feel...",A2,2
+11,SCT-T100,I feel ___ when expressing ideas,A2,2
+12,SCT-T105,I feel ___ expressing my opinions,A2,2
+13,SCT-T41,"When answering questions, I appear...",A2,2
+14,SCT-T106,It is ___ to share my ideas publicly,A2,2
+15,SCT-T10,"When teacher comments, I feel...",A2,2
+16,SCT-T102,I feel ___ beside confident people,A2,2
+17,SCT-T94,I appear ___ while speaking,A2,2
+18,SCT-T47,Asking questions makes me feel...,A2,2
+19,SCT-T72,Asking others for help feels...,A2,2
+20,SCT-T119,Asking question during a lecture feels...,A2,2
+21,SCT-P145,I write with great ___,A2,2
+22,SCT-P62,My nature is very ___,A2,2
+23,SCT-P7,My energy is full of ___,A2,2
+24,SCT-P169,My positive self is ___,A2,2
+25,SCT-P115,I love who I ___,A2,2
+26,SCT-P75,My wellness is very ___,A2,2
+27,SCT-P47,I count my ___ blessings,A2,2
+28,SCT-P84,My kindness is very ___,A2,2
+29,SCT-P85,I hold onto great ___,A2,2
+30,SCT-P33,My goals are very ___,A2,2
+1,SCT-T109,I feel ___ before my turn,B2,2
+2,SCT-T2,Being interrupted makes me feel...,B2,2
+3,SCT-T24,My family believes I am...,B2,2
+4,SCT-T38,Relatives describe me as...,B2,2
+5,SCT-T79,Being included in task makes me...,B2,2
+6,SCT-T39,"In class activities, I am usually...",B2,2
+7,SCT-T15,"In group settings, I am...",B2,2
+8,SCT-T7,"In group study, I am usually...",B2,2
+9,SCT-T31,"In groups, I am often...",B2,2
+10,SCT-T28,Others often think I am...,B2,2
+11,SCT-T62,Being watched makes me ...,B2,2
+12,SCT-T30,I handle attention by feeling...,B2,2
+13,SCT-T20,"In public, I appear...",B2,2
+14,SCT-T9,I feel...when others observe me.,B2,2
+15,SCT-T73,Being pointed out feels...,B2,2
+16,SCT-T16,Being seen makes me feel...,B2,2
+17,SCT-T33,"When people stare, I feel...",B2,2
+18,SCT-T6,People watch me as I am...,B2,2
+19,SCT-T34,Classmates often see me as...,B2,2
+20,SCT-T76,Peers usually see me as...,B2,2
+21,SCT-P117,I am worthy of ___,B2,2
+22,SCT-P15,I am growing more ___,B2,2
+23,SCT-P121,I am becoming my ___ self,B2,2
+24,SCT-P30,I feel ___ and motivated,B2,2
+25,SCT-P151,I rest and feel ___,B2,2
+26,SCT-P23,I wake up feeling ___,B2,2
+27,SCT-P139,I gave and felt ___,B2,2
+28,SCT-P101,I feel ___ being kind,B2,2
+29,SCT-P40,My heart is very ___,B2,2
+30,SCT-P134,I feel ___ and hopeful,B2,2
+1,SCT-T21,Friends usually find me very...,C2,2
+2,SCT-T17,I am often described as...,C2,2
+3,SCT-T23,I am seen as very...,C2,2
+4,SCT-T95,Others often find me ___,C2,2
+5,SCT-T80,Being in front of line feels...,C2,2
+6,SCT-T89,I seem ___ while taking initiative,C2,2
+7,SCT-T49,"During viva, I am usually...",C2,2
+8,SCT-T77,Handling challenges publicly feels...,C2,2
+9,SCT-T36,"During presentations, I appear...",C2,2
+10,SCT-T52,"When presenting, I feel...",C2,2
+11,SCT-T88,I appear ___ during public interactions,C2,2
+12,SCT-T81,Making mistakes publicly feels...,C2,2
+13,SCT-T57,"Introducing myself publicly, I feel...",C2,2
+14,SCT-T58,"Performing task publicly, I feel...",C2,2
+15,SCT-T111,My body feels ___ during social gathering,C2,2
+16,SCT-T103,My hands become ___ while presentation.,C2,2
+17,SCT-T82,My voice remains ___ during presentation.,C2,2
+18,SCT-T59,Attending a social event feels...,C2,2
+19,SCT-T48,"In social situations, I become...",C2,2
+20,SCT-T90,I behave ___ during social situations,C2,2
+21,SCT-P96,My actions are truly ___,C2,2
+22,SCT-P55,I enjoy every ___ moment,C2,2
+23,SCT-P51,The season feels truly ___,C2,2
+24,SCT-P81,I feel ___ in nature,C2,2
+25,SCT-P79,I appreciate every ___,C2,2
+26,SCT-P66,My passion is very ___,C2,2
+27,SCT-P76,I greet life with ___,C2,2
+28,SCT-P78,I feel ___ and free,C2,2
+29,SCT-P4,The sun feels very ___,C2,2
+30,SCT-P161,I feel thankful and ___,C2,2
+1,SCT-T3,Talking to strangers feels...,A3,3
+2,SCT-T97,I feel ___ in unfamiliar groups,A3,3
+3,SCT-T110,I feel ___ walking into gatherings,A3,3
+4,SCT-T61,Approaching strangers feels...,A3,3
+5,SCT-T68,"Being around others, I feel...",A3,3
+6,SCT-T86,I become ___ around strangers,A3,3
+7,SCT-T4,Standing in crowds feels...,A3,3
+8,SCT-T99,I feel ___ in daily people interaction,A3,3
+9,SCT-T8,"In gatherings, I often feel...",A3,3
+10,SCT-T63,"Compared to others, I am...",A3,3
+11,SCT-T25,I am known as ____ person.,A3,3
+12,SCT-T51,I am a person who is...,A3,3
+13,SCT-T65,Talking to authorities feels...,A3,3
+14,SCT-T98,I feel ___ when questioned directly,A3,3
+15,SCT-T85,I feel ___ during conversation,A3,3
+16,SCT-T54,"During my turn, I feel...",A3,3
+17,SCT-T100,I feel ___ when expressing ideas,A3,3
+18,SCT-T105,I feel ___ expressing my opinions,A3,3
+19,SCT-T41,"When answering questions, I appear...",A3,3
+20,SCT-T106,It is ___ to share my ideas publicly,A3,3
+21,SCT-P167,I am inspired by ___,A3,3
+22,SCT-P162,My thankful heart is ___,A3,3
+23,SCT-P163,I feel ___ and secure,A3,3
+24,SCT-P59,I feel truly ___ now,A3,3
+25,SCT-P77,The sunrise is truly ___,A3,3
+26,SCT-P64,The warmth inside feels ___,A3,3
+27,SCT-P74,kindness makes me look ___,A3,3
+28,SCT-P150,My breath brings me ___,A3,3
+29,SCT-P22,I feel ___ and alive,A3,3
+30,SCT-P20,I am truly ___ person,A3,3
+1,SCT-T10,"When teacher comments, I feel...",B3,3
+2,SCT-T102,I feel ___ beside confident people,B3,3
+3,SCT-T94,I appear ___ while speaking,B3,3
+4,SCT-T47,Asking questions makes me feel...,B3,3
+5,SCT-T72,Asking others for help feels...,B3,3
+6,SCT-T119,Asking question during a lecture feels...,B3,3
+7,SCT-T109,I feel ___ before my turn,B3,3
+8,SCT-T2,Being interrupted makes me feel...,B3,3
+9,SCT-T24,My family believes I am...,B3,3
+10,SCT-T38,Relatives describe me as...,B3,3
+11,SCT-T79,Being included in task makes me...,B3,3
+12,SCT-T39,"In class activities, I am usually...",B3,3
+13,SCT-T15,"In group settings, I am...",B3,3
+14,SCT-T7,"In group study, I am usually...",B3,3
+15,SCT-T31,"In groups, I am often...",B3,3
+16,SCT-T28,Others often think I am...,B3,3
+17,SCT-T62,Being watched makes me ...,B3,3
+18,SCT-T30,I handle attention by feeling...,B3,3
+19,SCT-T20,"In public, I appear...",B3,3
+20,SCT-T9,I feel...when others observe me.,B3,3
+21,SCT-P54,My potential is truly ___,B3,3
+22,SCT-P53,I feel ___ deep inside,B3,3
+23,SCT-P83,I remain calm and ___,B3,3
+24,SCT-P48,I wake with great ___,B3,3
+25,SCT-P100,My rest was very ___,B3,3
+26,SCT-P29,I am deeply ___,B3,3
+27,SCT-P25,Life brings me ___,B3,3
+28,SCT-P3,I am truly ___,B3,3
+29,SCT-P127,The mountains feel very ___,B3,3
+30,SCT-P132,I love the ___ morning,B3,3
+1,SCT-T73,Being pointed out feels...,C3,3
+2,SCT-T16,Being seen makes me feel...,C3,3
+3,SCT-T33,"When people stare, I feel...",C3,3
+4,SCT-T6,People watch me as I am...,C3,3
+5,SCT-T34,Classmates often see me as...,C3,3
+6,SCT-T76,Peers usually see me as...,C3,3
+7,SCT-T21,Friends usually find me very...,C3,3
+8,SCT-T17,I am often described as...,C3,3
+9,SCT-T23,I am seen as very...,C3,3
+10,SCT-T95,Others often find me ___,C3,3
+11,SCT-T80,Being in front of line feels...,C3,3
+12,SCT-T89,I seem ___ while taking initiative,C3,3
+13,SCT-T49,"During viva, I am usually...",C3,3
+14,SCT-T77,Handling challenges publicly feels...,C3,3
+15,SCT-T36,"During presentations, I appear...",C3,3
+16,SCT-T52,"When presenting, I feel...",C3,3
+17,SCT-T88,I appear ___ during public interactions,C3,3
+18,SCT-T81,Making mistakes publicly feels...,C3,3
+19,SCT-T57,"Introducing myself publicly, I feel...",C3,3
+20,SCT-T58,"Performing task publicly, I feel...",C3,3
+21,SCT-P130,I enjoy the ___ walks,C3,3
+22,SCT-P14,Good morning feels ___,C3,3
+23,SCT-P9,I feel deeply ___,C3,3
+24,SCT-P88,I carry great ___ within,C3,3
+25,SCT-P86,I feel ___ and whole,C3,3
+26,SCT-P89,My goals are truly ___,C3,3
+27,SCT-P138,My hope is truly ___,C3,3
+28,SCT-P18,My future looks very ___,C3,3
+29,SCT-P148,I build with great ___,C3,3
+30,SCT-P165,I am safe and ___,C3,3
+1,SCT-T111,My body feels ___ during social gathering,A4,4
+2,SCT-T103,My hands become ___ while presentation.,A4,4
+3,SCT-T82,My voice remains ___ during presentation.,A4,4
+4,SCT-T59,Attending a social event feels...,A4,4
+5,SCT-T48,"In social situations, I become...",A4,4
+6,SCT-T90,I behave ___ during social situations,A4,4
+7,SCT-T3,Talking to strangers feels...,A4,4
+8,SCT-T97,I feel ___ in unfamiliar groups,A4,4
+9,SCT-T110,I feel ___ walking into gatherings,A4,4
+10,SCT-T61,Approaching strangers feels...,A4,4
+11,SCT-T68,"Being around others, I feel...",A4,4
+12,SCT-T86,I become ___ around strangers,A4,4
+13,SCT-T4,Standing in crowds feels...,A4,4
+14,SCT-T99,I feel ___ in daily people interaction,A4,4
+15,SCT-T8,"In gatherings, I often feel...",A4,4
+16,SCT-T63,"Compared to others, I am...",A4,4
+17,SCT-T25,I am known as ____ person.,A4,4
+18,SCT-T51,I am a person who is...,A4,4
+19,SCT-T65,Talking to authorities feels...,A4,4
+20,SCT-T98,I feel ___ when questioned directly,A4,4
+21,SCT-P60,I choose to be ___,A4,4
+22,SCT-P71,I find life very ___,A4,4
+23,SCT-P70,My choices make me ___,A4,4
+24,SCT-P6,I woke up feeling ___,A4,4
+25,SCT-P13,Everything looks truly ___,A4,4
+26,SCT-P67,I feel ___ and strong,A4,4
+27,SCT-P158,My blessings are very ___,A4,4
+28,SCT-P118,My strengths are very ___,A4,4
+29,SCT-P93,I breathe and feel ___,A4,4
+30,SCT-P136,I feel ___ and optimistic,A4,4
+1,SCT-T85,I feel ___ during conversation,B4,4
+2,SCT-T54,"During my turn, I feel...",B4,4
+3,SCT-T100,I feel ___ when expressing ideas,B4,4
+4,SCT-T105,I feel ___ expressing my opinions,B4,4
+5,SCT-T41,"When answering questions, I appear...",B4,4
+6,SCT-T106,It is ___ to share my ideas publicly,B4,4
+7,SCT-T10,"When teacher comments, I feel...",B4,4
+8,SCT-T102,I feel ___ beside confident people,B4,4
+9,SCT-T94,I appear ___ while speaking,B4,4
+10,SCT-T47,Asking questions makes me feel...,B4,4
+11,SCT-T72,Asking others for help feels...,B4,4
+12,SCT-T119,Asking question during a lecture feels...,B4,4
+13,SCT-T109,I feel ___ before my turn,B4,4
+14,SCT-T2,Being interrupted makes me feel...,B4,4
+15,SCT-T24,My family believes I am...,B4,4
+16,SCT-T38,Relatives describe me as...,B4,4
+17,SCT-T79,Being included in task makes me...,B4,4
+18,SCT-T39,"In class activities, I am usually...",B4,4
+19,SCT-T15,"In group settings, I am...",B4,4
+20,SCT-T7,"In group study, I am usually...",B4,4
+21,SCT-P43,My smile is truly ___,B4,4
+22,SCT-P82,The music feels very ___,B4,4
+23,SCT-P56,I feel ___ at heart,B4,4
+24,SCT-P38,I am doing very ___,B4,4
+25,SCT-P28,The journey has been ___,B4,4
+26,SCT-P107,I have _____ goals,B4,4
+27,SCT-P124,I enjoy the ___ weather,B4,4
+28,SCT-P44,I find each day ___,B4,4
+29,SCT-P133,The fresh air feels ___,B4,4
+30,SCT-P160,My gratitude is very ___,B4,4
+1,SCT-T31,"In groups, I am often...",C4,4
+2,SCT-T28,Others often think I am...,C4,4
+3,SCT-T62,Being watched makes me ...,C4,4
+4,SCT-T30,I handle attention by feeling...,C4,4
+5,SCT-T20,"In public, I appear...",C4,4
+6,SCT-T9,I feel...when others observe me.,C4,4
+7,SCT-T73,Being pointed out feels...,C4,4
+8,SCT-T16,Being seen makes me feel...,C4,4
+9,SCT-T33,"When people stare, I feel...",C4,4
+10,SCT-T6,People watch me as I am...,C4,4
+11,SCT-T34,Classmates often see me as...,C4,4
+12,SCT-T76,Peers usually see me as...,C4,4
+13,SCT-T21,Friends usually find me very...,C4,4
+14,SCT-T17,I am often described as...,C4,4
+15,SCT-T23,I am seen as very...,C4,4
+16,SCT-T95,Others often find me ___,C4,4
+17,SCT-T80,Being in front of line feels...,C4,4
+18,SCT-T89,I seem ___ while taking initiative,C4,4
+19,SCT-T49,"During viva, I am usually...",C4,4
+20,SCT-T77,Handling challenges publicly feels...,C4,4
+21,SCT-P113,I finished task and felt ___,C4,4
+22,SCT-P120,I accept myself very ___,C4,4
+23,SCT-P156,My inner calm is ___,C4,4
+24,SCT-P32,I have a ___ heart,C4,4
+25,SCT-P37,My mood is very ___,C4,4
+26,SCT-P105,I learn with ___,C4,4
+27,SCT-P108,Winning feels ___,C4,4
+28,SCT-P1,Today is a ___ day,C4,4
+29,SCT-P168,My vision is very ___,C4,4
+30,SCT-P157,I feel ___ and lucky,C4,4
