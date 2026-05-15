@@ -302,11 +302,11 @@ def _decide(quality: dict, sentiment: dict, hard_neg_hit: Optional[str]) -> dict
     if sentiment["label"] == "POSITIVE":
         return {
             "decision": DECISION_ACCEPT, "reason": "positive",
-            "feedback": "Accepted!",
+            "feedback": "Correct!",
         }
     return {
         "decision": DECISION_REJECT, "reason": "negative",
-        "feedback": "Negative tone detected. Try a more positive or neutral word.",
+        "feedback": "Incorrect - Try a positive word",
     }
 
 
