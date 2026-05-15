@@ -359,20 +359,12 @@ IGROUP_ITEMS = [
 # BAT (Behavioral Avoidance Task) — Placeholder scenarios
 # ============================================================================
 BAT_INSTRUCTIONS = (
-    "Below are common social situations. For each one, rate your willingness to "
-    "attempt the situation right now on a scale of 0 (Not willing at all) to 10 "
-    "(Completely willing)."
+    "Your goal is to complete the Behavioral Activation Task as per guided by your researcher."
+    "For each scenario, rate your willingness to attempt the situation right now on a scale of 0 (Not willing at all) to 10 (Completely willing)."
 )
 
 BAT_SCENARIOS = [
-    "Make a phone call to someone you don't know well",
-    "Give a short speech to a small group",
-    "Ask a stranger for directions",
-    "Order food in a crowded restaurant",
-    "Attend a social gathering where you don't know many people",
-    "Make eye contact with a stranger for 5 seconds",
-    "Return an item to a store",
-    "Sit alone in a busy café for 30 minutes",
+    "Please ask the researcher about the task!"
 ]
 
 # ============================================================================

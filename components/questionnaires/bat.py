@@ -65,12 +65,12 @@ def render(code: str, base_path: str, on_complete=None):
         return
     
     # Progress indicator
-    st.progress(completed_count / total if total > 0 else 0)
-    st.markdown(
-        f"<div class='progress-text'>Completed: {completed_count} / {total} scenarios</div>",
-        unsafe_allow_html=True,
-    )
-    st.divider()
+    #st.progress(completed_count / total if total > 0 else 0)
+    #st.markdown(
+     #   f"<div class='progress-text'>Completed: {completed_count} / {total} scenarios</div>",
+      #  unsafe_allow_html=True,
+    #)
+    #st.divider()
     
     # If no scenario selected, show list view
     if selected_scenario_idx is None:
