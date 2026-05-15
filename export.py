@@ -83,7 +83,10 @@ def _extract_lsas_scores(data: dict, assessment_key: str) -> dict:
 
 def _extract_scale_total(data: dict, assessment_key: str, scale: str) -> dict:
     scale_data = _safe_get(data, "assessments", assessment_key, scale) or {}
-    return {f"{assessment_key}_{scale}_total": scale_data.get("total_score")}
+    # Calculate total from individual scored_value items (includes reverse scoring)
+    items = _normalise_items(scale_data.get("items"))
+    total = sum(int(item.get("scored_value", 0)) for item in items if isinstance(item, dict))
+    return {f"{assessment_key}_{scale}_total": total}
 
 
 def _extract_oximeter(data: dict, assessment_key: str) -> dict:
