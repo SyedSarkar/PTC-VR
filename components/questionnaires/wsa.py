@@ -44,31 +44,38 @@ def _is_complete(code: str, base_path: str) -> bool:
 
 
 def _load_stimuli() -> list[dict]:
-    """Load WSA items from the JSON data file. Returns [] if the file is
+    """Load WSA items from the CSV data file. Returns [] if the file is
     missing — the wrapper will display an error in that case."""
     try:
-        with open(config.WSA_STIMULI_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        import csv
+        with open(config.WSA_STIMULI_CSV, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            out = []
+            for row in reader:
+                word = (row.get("Word") or "").strip()
+                sentence = (row.get("Sentence") or "").strip()
+                word_type = (row.get("Word Type") or "").strip()
+                associated_str = (row.get("Associated") or "").strip().lower()
+                
+                if not word or not sentence:
+                    continue
+                
+                # Convert associated string to boolean
+                associated = False
+                if associated_str in ("true", "yes", "y", "1"):
+                    associated = True
+                elif associated_str in ("false", "no", "n", "0"):
+                    associated = False
+                
+                out.append({
+                    "word": word,
+                    "sentence": sentence,
+                    "associated": associated,
+                    "category": word_type,
+                })
+            return out
     except Exception:
         return []
-    if not isinstance(data, list):
-        return []
-    out = []
-    for item in data:
-        if not isinstance(item, dict):
-            continue
-        word = (item.get("word") or "").strip()
-        sentence = (item.get("sentence") or "").strip()
-        associated = item.get("associated")
-        if not word or not sentence or not isinstance(associated, bool):
-            continue
-        out.append({
-            "word": word,
-            "sentence": sentence,
-            "associated": associated,
-            "category": item.get("category") or "",
-        })
-    return out
 
 
 def _build_trial_list() -> list[dict]:
@@ -129,7 +136,7 @@ def render(code: str, base_path: str, on_complete=None):
     trials = _build_trial_list()
     if not trials:
         st.error(
-            f"No WSA stimuli found at `{config.WSA_STIMULI_PATH}`. "
+            f"No WSA stimuli found at `{config.WSA_STIMULI_CSV}`. "
             "Add valid items before running this task."
         )
         return
