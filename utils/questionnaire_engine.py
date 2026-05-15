@@ -363,6 +363,111 @@ def run_igroup_questionnaire(
 
 
 # ============================================================================
+# BDI-II QUESTIONNAIRE (Custom format with item-specific statements)
+# ============================================================================
+@st.fragment
+def run_bdi_ii_questionnaire(
+    code: str,
+    base_path: str,
+    title: str,
+    instructions: str,
+    items: list,
+    on_complete=None,
+):
+    total = len(items)
+    safe_key = base_path.replace("/", "_")
+
+    # Caching
+    cache_key = f"{safe_key}_cache"
+    pending_key = f"{safe_key}_pending"
+
+    if cache_key not in st.session_state:
+        st.session_state[cache_key] = _load_existing_responses(code, base_path)
+    if pending_key not in st.session_state:
+        st.session_state[pending_key] = {}
+
+    existing = st.session_state[cache_key]
+    pending = st.session_state[pending_key]
+
+    default_idx = _first_unanswered_index(existing, total)
+
+    st.markdown(f"## {title}")
+    st.markdown(f"<div class='form-text'>{instructions}</div>", unsafe_allow_html=True)
+    st.divider()
+
+    view_idx = _view_idx(safe_key, default_idx, total)
+
+    if view_idx >= total:
+        # Flush pending responses
+        for idx, statement in list(pending.items()):
+            # Extract score from statement (first character is the number)
+            score = int(statement[0]) if statement and statement[0].isdigit() else 0
+            _save_item_response(code, base_path, idx, {
+                "item_index": idx,
+                "item_title": items[idx]["title"],
+                "raw_value": score,
+                "scored_value": score,
+                "statement": statement,
+            })
+        pending.clear()
+        
+        st.success("✅ Questionnaire complete!")
+        if on_complete and st.button("Continue ➜", type="primary"):
+            on_complete()
+        return
+
+    st.progress(safe_progress(view_idx, total))
+    
+    item = items[view_idx]
+    st.markdown(f"<div class='item-title'>{item['title']}</div>", unsafe_allow_html=True)
+
+    # Get current selection
+    saved_statement = pending.get(view_idx) or existing.get(str(view_idx), {}).get("statement")
+    
+    choice = st.radio(
+        "Select the statement that best describes you:",
+        item["statements"],
+        key=f"{safe_key}_item_{view_idx}",
+        index=item["statements"].index(saved_statement) if saved_statement in item["statements"] else None,
+        label_visibility="collapsed",
+    )
+
+    # Save selection to memory instantly
+    if choice is not None:
+        pending[view_idx] = choice
+
+    def _save_and_advance():
+        # Flush pending responses
+        for idx, statement in list(pending.items()):
+            score = int(statement[0]) if statement and statement[0].isdigit() else 0
+            _save_item_response(code, base_path, idx, {
+                "item_index": idx,
+                "item_title": items[idx]["title"],
+                "raw_value": score,
+                "scored_value": score,
+                "statement": statement,
+            })
+        pending.clear()
+        _set_view_idx(safe_key, view_idx + 1)
+        st.rerun()
+
+    # Auto-advance on selection
+    last_key = f"{safe_key}_last_{view_idx}"
+    if last_key not in st.session_state:
+        st.session_state[last_key] = saved_statement
+
+    if choice is not None and choice != st.session_state.get(last_key):
+        st.session_state[last_key] = choice
+        _save_and_advance()
+
+    _nav_buttons(
+        safe_key, view_idx, total,
+        can_advance=(choice is not None),
+        on_next=_save_and_advance,
+    )
+
+
+# ============================================================================
 # COMPLETION CHECK
 # ============================================================================
 def is_questionnaire_complete(code: str, base_path: str, total_items: int) -> bool:

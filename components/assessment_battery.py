@@ -12,7 +12,7 @@ from utils.helpers import next_phase as _next_phase, now_iso
 from utils.data_logger import get_logger
 from utils.questionnaire_engine import is_questionnaire_complete
 
-from components.questionnaires import lsas, bfne, cbq, cbq_trait, bat, oximeter, dot_probe, wsa
+from components.questionnaires import bdi, lsas, bfne, cbq, cbq_trait, bat, oximeter, dot_probe, wsa
 
 
 ASSESSMENT_PATHS = {
@@ -32,6 +32,7 @@ ASSESSMENT_TITLES = {
 
 def _battery_steps(base_path: str):
     return [
+        ("bdi",        bdi.render,        len(config.BDI_II_ITEMS),     f"{base_path}/bdi"),
         ("lsas",       lsas.render,       len(config.LSAS_ITEMS),       f"{base_path}/lsas"),
         ("bfne",       bfne.render,       len(config.BFNE_ITEMS),       f"{base_path}/bfne"),
         ("cbq",        cbq.render,        len(config.CBQ_ITEMS),        f"{base_path}/cbq"),

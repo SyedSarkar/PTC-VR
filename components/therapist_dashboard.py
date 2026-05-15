@@ -370,14 +370,15 @@ def _render_lsas_table(lsas_node: dict):
         ],
     )
     st.dataframe(df, use_container_width=True, hide_index=True)
-    tot = _completion_summary(lsas_node)
-    if tot:
-        st.caption(
-            f"Totals — Fear: **{tot.get('fear_total')}**  ·  "
-            f"Avoidance: **{tot.get('avoidance_total')}**  ·  "
-            f"Combined: **{tot.get('total_score')}**  ·  "
-            f"Completed: {tot.get('completed_timestamp') or '—'}"
-        )
+    total_score = sum(int(entry.get("fear", 0)) + int(entry.get("avoidance", 0)) for entry in items if isinstance(entry, dict))
+    fear_total = sum(int(entry.get("fear", 0)) for entry in items if isinstance(entry, dict))
+    avoidance_total = sum(int(entry.get("avoidance", 0)) for entry in items if isinstance(entry, dict))
+    
+    st.caption(
+        f"Totals — Fear: **{fear_total}**  ·  "
+        f"Avoidance: **{avoidance_total}**  ·  "
+        f"Combined: **{total_score}**"
+    )
 
 
 def _render_likert_table(node: dict, scale_name: str, total_items: int, item_label: str):
@@ -393,11 +394,52 @@ def _render_likert_table(node: dict, scale_name: str, total_items: int, item_lab
         ],
     )
     st.dataframe(df, use_container_width=True, hide_index=True)
+    
+    # Calculate total score from items since it's not stored at node level
+    total_score = sum(int(entry.get("scored_value", 0)) for entry in items if isinstance(entry, dict))
+    
     tot = _completion_summary(node)
-    if tot.get("total_score") is not None or tot.get("completed_timestamp"):
+    completed = tot.get("completed_timestamp") or node.get("completed_timestamp")
+    if total_score > 0 or completed:
         st.caption(
-            f"Total Score: **{tot.get('total_score', '—')}**  ·  "
-            f"Completed: {tot.get('completed_timestamp') or '—'}"
+            f"Total Score: **{total_score}**  ·  "
+            f"Completed: {completed or '—'}"
+        )
+
+
+def _render_bdi_ii_table(node: dict):
+    """BDI-II — 21 items with item-specific statements."""
+    items = _normalise_items((node or {}).get("items"))
+    rows = []
+    indexed = {}
+    for i, entry in enumerate(items):
+        idx = entry.get("item_index", i)
+        try:
+            idx = int(idx)
+        except (TypeError, ValueError):
+            idx = i
+        indexed[idx] = entry
+
+    # Calculate total score from items
+    total_score = sum(int(entry.get("scored_value", 0)) for entry in items if isinstance(entry, dict))
+
+    for i in range(len(config.BDI_II_ITEMS)):
+        entry = indexed.get(i, {})
+        rows.append({
+            "Item #": f"BDI-II-{i + 1}",
+            "Title": entry.get("item_title", ""),
+            "Selected Statement": entry.get("statement", ""),
+            "Score (0–3)": entry.get("scored_value", ""),
+            "Timestamp": entry.get("timestamp", ""),
+        })
+    df = pd.DataFrame(rows)
+    st.dataframe(df, use_container_width=True, hide_index=True)
+    tot = _completion_summary(node)
+    completed = tot.get("completed_timestamp") or node.get("completed_timestamp")
+    if total_score > 0 or completed:
+        st.caption(
+            f"Total Score: **{total_score}**  ·  "
+            f"Completed: {completed or '—'}"
         )
 
 
@@ -609,6 +651,9 @@ def _section_assessment(code: str, data: dict, key: str, heading: str,
 
     st.markdown("**LSAS — Liebowitz Social Anxiety Scale (24 items)**")
     _render_lsas_table(node.get("lsas") or {})
+
+    st.markdown("**BDI-II — Beck Depression Inventory II (21 items)**")
+    _render_bdi_ii_table(node.get("bdi") or {})
 
     st.markdown("**BFNE — Brief Fear of Negative Evaluation (12 items)**")
     _render_likert_table(node.get("bfne") or {}, "BFNE", len(config.BFNE_ITEMS), "Item")

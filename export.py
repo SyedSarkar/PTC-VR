@@ -16,7 +16,7 @@ Workbook layout (one sheet each, where data exists):
     Consent
     Progress
     Withdrawals
-    Assessments_<scale>_<phase> — LSAS / BFNE / CBQ / BAT / Oximeter
+    Assessments_<scale>_<phase> — BDI-II / LSAS / BFNE / CBQ / BAT / Oximeter
                                   for pre / post1 / post2 / post3
     PTC_FAT                     — every FAT response, all sessions
     PTC_SentenceCompletion      — every Sentence-Completion response
@@ -202,6 +202,7 @@ def _participant_to_row(code: str, data: dict) -> dict:
             row[f"admin_note_{key}"] = value
     for phase in ("pre", "post1", "post2", "post3"):
         row.update(_extract_lsas_scores(data, phase))
+        row.update(_extract_scale_total(data, phase, "bdi"))
         row.update(_extract_scale_total(data, phase, "bfne"))
         row.update(_extract_scale_total(data, phase, "cbq"))
         row.update(_extract_scale_total(data, phase, "cbq_trait"))
@@ -352,6 +353,32 @@ def _build_bat_items(all_data: dict) -> pd.DataFrame:
                     "willingness": entry.get("raw_value"),
                     "scored_value": entry.get("scored_value"),
                     "label": entry.get("label"),
+                    "timestamp": entry.get("timestamp"),
+                })
+    return pd.DataFrame(rows)
+
+
+def _build_bdi_ii_items(all_data: dict) -> pd.DataFrame:
+    """One row per (participant, phase, item) for BDI-II."""
+    rows = []
+    for code, data in all_data.items():
+        if not isinstance(data, dict):
+            continue
+        for phase in ("pre", "post1", "post2", "post3"):
+            node = _safe_get(data, "assessments", phase, "bdi") or {}
+            items = _normalise_items(node.get("items"))
+            if not items:
+                continue
+            for i, entry in enumerate(items):
+                idx = entry.get("item_index", i)
+                rows.append({
+                    "participant_code": code,
+                    "phase": phase,
+                    "item_label": f"BDI-II-{int(idx) + 1 if isinstance(idx, int) else i + 1}",
+                    "item_title": entry.get("item_title"),
+                    "raw_value": entry.get("raw_value"),
+                    "scored_value": entry.get("scored_value"),
+                    "statement": entry.get("statement"),
                     "timestamp": entry.get("timestamp"),
                 })
     return pd.DataFrame(rows)
@@ -764,6 +791,7 @@ def build_workbook_bytes() -> tuple[bytes | None, dict]:
         "Progress": _build_progress(all_data),
         "Withdrawals": _build_withdrawals(all_data),
         "Assessments_LSAS_items": _build_lsas_items(all_data),
+        "Assessments_BDI_II_items": _build_bdi_ii_items(all_data),
         "Assessments_BFNE_items": _build_likert_items(all_data, "bfne", len(config.BFNE_ITEMS)),
         "Assessments_CBQ_items": _build_likert_items(all_data, "cbq", len(config.CBQ_ITEMS)),
         "Assessments_CBQ_Trait_items": _build_likert_items(all_data, "cbq_trait", len(config.CBQ_TRAIT_ITEMS)),
@@ -886,6 +914,7 @@ def build_single_participant_workbook(code: str) -> tuple[bytes | None, dict]:
         "Progress": _build_progress(single_data),
         "Withdrawals": _build_withdrawals(single_data),
         "Assessments_LSAS_items": _build_lsas_items(single_data),
+        "Assessments_BDI_II_items": _build_bdi_ii_items(single_data),
         "Assessments_BFNE_items": _build_likert_items(single_data, "bfne", len(config.BFNE_ITEMS)),
         "Assessments_CBQ_items": _build_likert_items(single_data, "cbq", len(config.CBQ_ITEMS)),
         "Assessments_CBQ_Trait_items": _build_likert_items(single_data, "cbq_trait", len(config.CBQ_TRAIT_ITEMS)),
