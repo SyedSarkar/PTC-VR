@@ -72,7 +72,11 @@ def render(code: str, session_num: int, on_complete=None):
     with cols[0]:
         st.markdown(f"<div class='points-banner'>Points: {score_so_far}</div>", unsafe_allow_html=True)
     with cols[2]:
-        st.markdown(f"<div class='progress-text' style='text-align:right</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div class='progress-text' style='text-align:right;'>"
+            f"{completed_count} / {total}</div>",
+            unsafe_allow_html=True,
+        )
 
     st.progress(safe_progress(completed_count, total))
 

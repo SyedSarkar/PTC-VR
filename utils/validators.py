@@ -213,8 +213,6 @@ def validate_ptc_response(
 
     # Sentiment
     sentiment_label, confidence = classify_sentiment(phrase)
-    if phrase == "a nice person":
-        sentiment_label, confidence = "POSITIVE", 0.95
 
     accepted = sentiment_label == "POSITIVE"
     score = 2 if accepted else 0

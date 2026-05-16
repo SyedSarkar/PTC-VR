@@ -42,6 +42,38 @@ def _save_item_response(code: str, base_path: str, index: int, payload: dict):
     logger.set(code, f"{base_path}/items/{index}", payload, sync=False)
 
 
+def _save_completion(code: str, base_path: str, total_score: int,
+                     totals: dict | None = None):
+    """Write a one-shot completion marker for a questionnaire.
+
+    Mirrors the pattern used elsewhere (assessment_battery.py, fat.py):
+    a `completed_timestamp` field on the questionnaire's base path plus
+    its summary score(s). Guarded so a rerun after completion does not
+    rewrite the timestamp.
+    """
+    logger = get_logger()
+    node = logger.get(code, base_path) or {}
+    if isinstance(node, dict) and node.get("completed_timestamp"):
+        return
+    payload = {
+        "completed_timestamp": now_iso(),
+        "total_score": int(total_score),
+    }
+    if totals:
+        payload.update({k: int(v) for k, v in totals.items()})
+    logger.update(code, base_path, payload, sync=False)
+
+
+def _safe_index(labels: list, value):
+    """Return labels.index(value) or None if value is missing/malformed."""
+    if value is None:
+        return None
+    try:
+        return labels.index(value)
+    except (ValueError, TypeError):
+        return None
+
+
 def _flush_pending(code: str, base_path: str, pending: dict, items: list, 
                    scale_labels: list, scale_values: list, reverse_scored=None):
     """Save all pending answers at once."""
@@ -232,12 +264,12 @@ def run_lsas_questionnaire(
     with col_f:
         st.markdown("**Fear / Anxiety**")
         fear_choice = st.radio("Fear:", fear_labels, key=f"{safe_key}_fear_{view_idx}",
-                               index=fear_labels.index(saved_fear) if saved_fear else None,
+                               index=_safe_index(fear_labels, saved_fear),
                                label_visibility="collapsed")
     with col_a:
         st.markdown("**Avoidance**")
         avoid_choice = st.radio("Avoidance:", avoid_labels, key=f"{safe_key}_avoid_{view_idx}",
-                                index=avoid_labels.index(saved_avoid) if saved_avoid else None,
+                                index=_safe_index(avoid_labels, saved_avoid),
                                 label_visibility="collapsed")
 
     def _save_and_advance():
@@ -327,7 +359,10 @@ def run_igroup_questionnaire(
     saved_entry = existing.get(str(view_idx)) or existing.get(view_idx) or {}
     saved_value = saved_entry.get("value") if isinstance(saved_entry, dict) else None
     scale_values = [1, 2, 3, 4, 5, 6, 7]
-    default_index = scale_values.index(int(saved_value)) if saved_value in map(str, scale_values) else None
+    try:
+        default_index = scale_values.index(int(saved_value)) if saved_value is not None else None
+    except (ValueError, TypeError):
+        default_index = None
 
     choice = st.radio(
         "Rating:", options=scale_values, key=f"{safe_key}_item_{view_idx}",

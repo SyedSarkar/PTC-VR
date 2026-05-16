@@ -112,8 +112,8 @@ def render(code: str, base_path: str, on_complete=None,
 
     # All readings complete
     if len(completed) == len(points):
-        # Save completion timestamp
-        logger.update(code, base_path, {"completed_timestamp": now_iso()})
+        if not (isinstance(existing_all, dict) and existing_all.get("completed_timestamp")):
+            logger.update(code, base_path, {"completed_timestamp": now_iso()})
         st.success("✅ All oximeter readings recorded.")
         # Use safe key (no slashes) for widget keys
         safe_key = base_path.replace("/", "_")
