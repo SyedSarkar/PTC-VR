@@ -526,38 +526,6 @@ def _render_dot_probe_block(node: dict):
         st.dataframe(df, use_container_width=True, hide_index=True)
 
 
-def _render_wsa_block(node: dict):
-    """Render a WSA block (one assessment point)."""
-    if not isinstance(node, dict) or not node.get("completed_timestamp"):
-        st.caption("Not completed.")
-        return
-    s_cols = st.columns(4)
-    with s_cols[0]:
-        st.metric("Trials", node.get("num_trials", "—"))
-    with s_cols[1]:
-        st.metric("Accuracy", f"{(node.get('accuracy') or 0) * 100:.1f}%")
-    with s_cols[2]:
-        st.metric("Mean Decision RT", f"{node.get('mean_decision_rt_ms', '—')} ms")
-    with s_cols[3]:
-        st.metric("Mean Reading RT", f"{node.get('mean_reading_rt_ms', '—')} ms")
-    st.caption(f"Completed: {node.get('completed_timestamp', '—')}")
-    trials = node.get("trials") or []
-    if isinstance(trials, dict):
-        trials = _normalise_items(trials)
-    if trials:
-        df = pd.DataFrame([{
-            "Trial #": f"WSA-{t.get('trial', i + 1)}",
-            "Word": t.get("word"),
-            "Sentence": t.get("sentence"),
-            "Category": t.get("category"),
-            "Expected": t.get("expected"),
-            "Response": t.get("response"),
-            "Correct": t.get("correct"),
-            "Reading RT (ms)": t.get("reading_rt_ms"),
-            "Decision RT (ms)": t.get("decision_rt_ms"),
-            "Timestamp": t.get("timestamp"),
-        } for i, t in enumerate(trials)])
-        st.dataframe(df, use_container_width=True, hide_index=True)
 
 
 def _render_oximeter_table(ox_node: dict):
@@ -669,9 +637,6 @@ def _section_assessment(code: str, data: dict, key: str, heading: str,
 
     st.markdown("**Attentional Bias — Dot-Probe Task**")
     _render_dot_probe_block(node.get("dot_probe") or {})
-
-    st.markdown("**Word Sentence Association Task**")
-    _render_wsa_block(node.get("wsa") or {})
 
     st.markdown("**Oximeter Readings**")
     _render_oximeter_table(node.get("oximeter") or {})

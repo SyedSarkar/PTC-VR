@@ -773,27 +773,11 @@ DOT_PROBE_ITI_MAX_MS     = 1000
 
 
 # ============================================================================
-# WORD SENTENCE ASSOCIATION (WSA) TASK
-# ============================================================================
-# Stimuli are loaded from data/wsa_stimuli.json. Each entry:
-#     { "word": "...", "sentence": "...", "associated": true|false }
-# `associated` is the ground-truth answer (Y = true, N = false).
-WSA_NUM_TRIALS = 30                  # may be less if the data file has fewer
-
-# Timings (ms) — from the protocol.
-WSA_FIXATION_MS        = 300
-WSA_WORD_MS            = 500
-WSA_SENTENCE_TIMEOUT_MS = 15000      # safety cap; participant presses Space to continue
-WSA_DECISION_TIMEOUT_MS = 8000       # safety cap on Y/N decision
-
-
-# ============================================================================
 # DATA FILE PATHS
 # ============================================================================
 DATA_DIR = Path(__file__).resolve().parent / "data"
 CUE_WORDS_PATH = DATA_DIR / "cue_words.txt"
 SENTENCES_PATH = DATA_DIR / "sentences.txt"
-WSA_STIMULI_CSV = DATA_DIR / "wsa_stimuli.csv"
 FAT_WORDS_CSV = DATA_DIR / "ptc_words.csv"
 PTC_SENTENCE_CSV = DATA_DIR / "ptc_sentence.csv"
 

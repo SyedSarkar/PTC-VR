@@ -439,59 +439,6 @@ def _build_dot_probe_trials(all_data: dict) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def _build_wsa_summary(all_data: dict) -> pd.DataFrame:
-    rows = []
-    for code, data in all_data.items():
-        if not isinstance(data, dict):
-            continue
-        for phase in ("pre", "post1", "post2", "post3"):
-            node = _safe_get(data, "assessments", phase, "wsa") or {}
-            if not node.get("completed_timestamp"):
-                continue
-            rows.append({
-                "participant_code": code,
-                "phase": phase,
-                "num_trials": node.get("num_trials"),
-                "accuracy": node.get("accuracy"),
-                "mean_decision_rt_ms": node.get("mean_decision_rt_ms"),
-                "mean_reading_rt_ms": node.get("mean_reading_rt_ms"),
-                "completed_timestamp": node.get("completed_timestamp"),
-            })
-    return pd.DataFrame(rows)
-
-
-def _build_wsa_trials(all_data: dict) -> pd.DataFrame:
-    rows = []
-    for code, data in all_data.items():
-        if not isinstance(data, dict):
-            continue
-        for phase in ("pre", "post1", "post2", "post3"):
-            node = _safe_get(data, "assessments", phase, "wsa") or {}
-            trials = node.get("trials") or []
-            if isinstance(trials, dict):
-                trials = _normalise_items(trials)
-            for i, t in enumerate(trials):
-                if not isinstance(t, dict):
-                    continue
-                rows.append({
-                    "participant_code": code,
-                    "phase": phase,
-                    "trial": t.get("trial", i + 1),
-                    "word": t.get("word"),
-                    "sentence": t.get("sentence"),
-                    "category": t.get("category"),
-                    "expected": t.get("expected"),
-                    "response": t.get("response"),
-                    "correct": t.get("correct"),
-                    "reading_rt_ms": t.get("reading_rt_ms"),
-                    "reading_timed_out": t.get("reading_timed_out"),
-                    "decision_rt_ms": t.get("decision_rt_ms"),
-                    "decision_timed_out": t.get("decision_timed_out"),
-                    "timestamp": t.get("timestamp"),
-                })
-    return pd.DataFrame(rows)
-
-
 def _build_assessment_oximeter(all_data: dict) -> pd.DataFrame:
     rows = []
     for code, data in all_data.items():
@@ -798,8 +745,6 @@ def build_workbook_bytes() -> tuple[bytes | None, dict]:
         "Assessments_BAT_items": _build_bat_items(all_data),
         "Assessments_DotProbe_summary": _build_dot_probe_summary(all_data),
         "Assessments_DotProbe_trials": _build_dot_probe_trials(all_data),
-        "Assessments_WSA_summary": _build_wsa_summary(all_data),
-        "Assessments_WSA_trials": _build_wsa_trials(all_data),
         "Assessments_Oximeter": _build_assessment_oximeter(all_data),
         "PTC_FAT": _build_ptc_fat(all_data),
         "PTC_SentenceCompletion": _build_ptc_sentence(all_data),

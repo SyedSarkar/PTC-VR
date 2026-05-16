@@ -12,7 +12,7 @@ from utils.helpers import next_phase as _next_phase, now_iso
 from utils.data_logger import get_logger
 from utils.questionnaire_engine import is_questionnaire_complete
 
-from components.questionnaires import bdi, lsas, bfne, cbq, cbq_trait, bat, oximeter, dot_probe, wsa
+from components.questionnaires import bdi, lsas, bfne, cbq, cbq_trait, bat, oximeter, dot_probe
 
 
 ASSESSMENT_PATHS = {
@@ -40,7 +40,6 @@ def _battery_steps(base_path: str):
         ("bat",        bat.render,        len(config.BAT_SCENARIOS),    f"{base_path}/bat"),
         ("oximeter",   oximeter.render,   None,                         f"{base_path}/oximeter"),
         ("dot_probe",  dot_probe.render,  None,                         f"{base_path}/dot_probe"),
-        ("wsa",        wsa.render,        None,                         f"{base_path}/wsa")
     ]
 
 
@@ -91,7 +90,7 @@ def render(phase_key: str):
     for key, render_fn, total_items, sub_path in steps:
         if key == "oximeter":
             done = _is_oximeter_complete(code, sub_path)
-        elif key in ("dot_probe", "wsa"):
+        elif key == "dot_probe":
             done = _is_task_complete_by_timestamp(code, sub_path)
         else:
             done = is_questionnaire_complete(code, sub_path, total_items)
