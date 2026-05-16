@@ -234,14 +234,21 @@ def run_lsas_questionnaire(
     on_complete=None,
 ):
     total = len(items)
-    existing = _load_existing_responses(code, base_path)
+    safe_key = base_path.replace("/", "_")
+
+    # In-memory cache — load once, then keep updates local. Eliminates the
+    # per-click Firebase round-trip that made LSAS feel laggy.
+    cache_key = f"{safe_key}_cache"
+    if cache_key not in st.session_state:
+        st.session_state[cache_key] = _load_existing_responses(code, base_path)
+    existing = st.session_state[cache_key]
+
     default_idx = _first_unanswered_index(existing, total)
 
     st.markdown(f"## {title}")
     st.markdown(f"<div class='form-text'>{instructions}</div>", unsafe_allow_html=True)
     st.divider()
 
-    safe_key = base_path.replace("/", "_")
     view_idx = _view_idx(safe_key, default_idx, total)
 
     if view_idx >= total:
@@ -277,19 +284,21 @@ def run_lsas_questionnaire(
             return
         fear_val = fear_labels.index(fear_choice)
         avoid_val = avoid_labels.index(avoid_choice)
-        _save_item_response(code, base_path, view_idx, {
+        item_payload = {
             "item_index": view_idx,
             "situation": situation,
             "fear": fear_val,
             "avoidance": avoid_val,
             "fear_label": fear_choice,
             "avoidance_label": avoid_choice,
-        })
+        }
+        _save_item_response(code, base_path, view_idx, item_payload)
+        # Update cache locally so we don't need to re-read from Firebase
+        existing[str(view_idx)] = item_payload
 
-        refreshed = _load_existing_responses(code, base_path)
-        if _first_unanswered_index(refreshed, total) >= total:
-            fear_total = sum(int(v.get("fear", 0)) for v in refreshed.values() if isinstance(v, dict))
-            avoid_total = sum(int(v.get("avoidance", 0)) for v in refreshed.values() if isinstance(v, dict))
+        if _first_unanswered_index(existing, total) >= total:
+            fear_total = sum(int(v.get("fear", 0)) for v in existing.values() if isinstance(v, dict))
+            avoid_total = sum(int(v.get("avoidance", 0)) for v in existing.values() if isinstance(v, dict))
             _save_completion(code, base_path, total_score=fear_total + avoid_total,
                              totals={"fear_total": fear_total, "avoidance_total": avoid_total})
 
@@ -329,14 +338,21 @@ def run_igroup_questionnaire(
     on_complete=None,
 ):
     total = len(items)
-    existing = _load_existing_responses(code, base_path)
+    safe_key = base_path.replace("/", "_")
+
+    # In-memory cache — same pattern as BDI / LSAS. Avoids a synchronous
+    # Firebase read after every selection.
+    cache_key = f"{safe_key}_cache"
+    if cache_key not in st.session_state:
+        st.session_state[cache_key] = _load_existing_responses(code, base_path)
+    existing = st.session_state[cache_key]
+
     default_idx = _first_unanswered_index(existing, total)
 
     st.markdown(f"## {title}")
     st.markdown(f"<div class='form-text'>{instructions}</div>", unsafe_allow_html=True)
     st.divider()
 
-    safe_key = base_path.replace("/", "_")
     view_idx = _view_idx(safe_key, default_idx, total)
 
     if view_idx >= total:
@@ -372,14 +388,17 @@ def run_igroup_questionnaire(
     def _save_and_advance():
         if choice is None:
             return
-        _save_item_response(code, base_path, view_idx, {
+        item_payload = {
             "item_index": view_idx,
             "question": question,
             "value": int(choice),
-        })
-        refreshed = _load_existing_responses(code, base_path)
-        if _first_unanswered_index(refreshed, total) >= total:
-            total_score = sum(int(v.get("value", 0)) for v in refreshed.values() if isinstance(v, dict))
+        }
+        _save_item_response(code, base_path, view_idx, item_payload)
+        # Update local cache; skip the Firebase re-read
+        existing[str(view_idx)] = item_payload
+
+        if _first_unanswered_index(existing, total) >= total:
+            total_score = sum(int(v.get("value", 0)) for v in existing.values() if isinstance(v, dict))
             _save_completion(code, base_path, total_score=total_score)
         _set_view_idx(safe_key, view_idx + 1)
 

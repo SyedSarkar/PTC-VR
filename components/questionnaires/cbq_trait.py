@@ -12,7 +12,7 @@ def render(code: str, base_path: str, on_complete=None):
     run_single_scale_questionnaire(
         code=code,
         base_path=base_path,
-        title="Cognitive Beliefs Questionnaire - Trait (CBQ-Trait)",
+        title="Core Beliefs Questionnaire - Trait (CBQ-Trait)",
         instructions=config.CBQ_TRAIT_INSTRUCTIONS,
         items=config.CBQ_TRAIT_ITEMS,
         scale_labels=config.CBQ_TRAIT_LABELS,

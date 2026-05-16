@@ -24,7 +24,7 @@ except ImportError:
 # ============================================================================
 # STUDY METADATA
 # ============================================================================
-STUDY_TITLE = "Comparing Intervention Approaches for Social Anxiety Disorder: A Randomized Controlled Trial"
+STUDY_TITLE = "A Ranodmized Controlled Trail of AI-Integrated Proactive Thought Control. Virtual Reality-Assisted Exposure, and Standard CBT with Exposure for Social Anxiety Disorder"
 PRINCIPAL_INVESTIGATOR = "Ather Mujtaba"
 RESEARCHER = "Esha Jaffar"
 INSTITUTION = "GIFT University"
@@ -179,7 +179,7 @@ BFNE_ITEMS = [
 BFNE_REVERSE_SCORED = [2, 4, 7, 10]
 
 # ============================================================================
-# CBQ (Cognitive Beliefs Questionnaire) — 20 items, 1-6 scale
+# CBQ (Core Beliefs Questionnaire) — 20 items, 1-6 scale
 # ============================================================================
 CBQ_INSTRUCTIONS = (
     "People frequently hold a range of both positive and negative beliefs about how "
@@ -223,7 +223,7 @@ CBQ_ITEMS = [
 ]
 
 # ============================================================================
-# CBQ-Trait (Cognitive Beliefs Questionnaire - Trait) — 20 items, 1-6 scale
+# CBQ-Trait (Core Beliefs Questionnaire - Trait) — 20 items, 1-6 scale
 # ============================================================================
 CBQ_TRAIT_INSTRUCTIONS = (
     "People frequently hold a range of both positive and negative beliefs about themselves. "
@@ -569,7 +569,7 @@ IGROUP_ITEMS = [
 # BAT (Behavioral Avoidance Task) — Placeholder scenarios
 # ============================================================================
 BAT_INSTRUCTIONS = (
-    "Your goal is to complete the Behavioral Activation Task as per guided by your researcher."
+    "Your goal is to complete the Behavioral Avoidance Task as per guided by your researcher."
     "For each scenario, rate your willingness to attempt the situation right now on a scale of 0 (Not willing at all) to 10 (Completely willing)."
 )
 

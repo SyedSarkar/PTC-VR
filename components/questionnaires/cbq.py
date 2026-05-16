@@ -1,7 +1,7 @@
 """
 components/questionnaires/cbq.py
 =================================
-Cognitive Beliefs Questionnaire - 20 items
+Core Beliefs Questionnaire - 20 items
 """
 
 import config
@@ -12,7 +12,7 @@ def render(code: str, base_path: str, on_complete=None):
     run_single_scale_questionnaire(
         code=code,
         base_path=base_path,
-        title="Cognitive Beliefs Questionnaire (CBQ)",
+        title="Core Beliefs Questionnaire (CBQ)",
         instructions=config.CBQ_INSTRUCTIONS,
         items=config.CBQ_ITEMS,
         scale_labels=config.CBQ_LABELS,

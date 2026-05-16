@@ -61,6 +61,11 @@ def render(code: str, base_path: str, on_complete=None):
         st.success(f"✅ You have completed {completed_count} scenario(s). You may proceed.")
         if on_complete:
             if st.button("Continue ➜", type="primary", key=f"{safe_key}_continue"):
+                already_marked = isinstance(existing, dict) and existing.get("completed_timestamp")
+                if not already_marked:
+                    logger.update(code, base_path, {
+                        "completed_timestamp": now_iso()
+                    }, sync=False)
                 on_complete()
         return
     

@@ -90,7 +90,7 @@ def render(phase_key: str):
     for key, render_fn, total_items, sub_path in steps:
         if key == "oximeter":
             done = _is_oximeter_complete(code, sub_path)
-        elif key == "dot_probe":
+        elif key in ("dot_probe", "bat"):
             done = _is_task_complete_by_timestamp(code, sub_path)
         else:
             done = is_questionnaire_complete(code, sub_path, total_items)
